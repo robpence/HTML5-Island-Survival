@@ -15,12 +15,7 @@ var mixins = {
     var y = this.menuConfig.startY;
 
     // create
-    var txt = game.add.text(
-      x,
-      (this.optionCount * 80) + y,
-      text,
-      style.navitem[className]
-    );
+    var txt = game.add.text(x, (this.optionCount * 80) + y, text, style.navitem[className]);
 
     // use the anchor method to center if startX set to center.
     txt.anchor.setTo(this.menuConfig.startX === "center" ? 0.5 : 0.0);
