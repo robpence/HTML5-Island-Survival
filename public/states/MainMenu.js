@@ -42,7 +42,7 @@ GameMenu.prototype = {
 		};
 		function instructionsButtonListener(){
 			console.log("instructions button hit");
-			//game.state.start("Game");
+			game.state.start("Instructions");
 		};
 		function settingsButtonListener(){
 			console.log("settings button hit");

@@ -11,6 +11,7 @@ Splash.prototype = {
     game.load.script('gameover',  'states/GameOver.js');
     game.load.script('credits',   'states/Credits.js');
     game.load.script('options',   'states/Options.js');
+    game.load.script('instruct',  'states/Instructions.js');
   },
 
   loadBgm: function () {
@@ -65,6 +66,7 @@ Splash.prototype = {
     game.state.add("GameOver",  GameOver);
     game.state.add("Credits",   Credits);
     game.state.add("Options",   Options);
+    game.state.add("Instructions",   Instructions);
   },
 
   
