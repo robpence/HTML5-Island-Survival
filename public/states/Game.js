@@ -39,77 +39,27 @@ isPalmLeaf = true;
 isLog = true;
 isVine  =true;
 
-//var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game'), Main = function(){};
-
 Game.prototype = {
 	
 	preload() {
 		console.log("preloader called");
-		this.optionCount = 1;
-		//game.load.image('playImage', PATH_PLAY);
-		//game.load.image('instructImage', PATH_INST);
-		//game.load.image('settingsImage', PATH_SETT);
-		//game.load.image('creditsImage', PATH_CRED);
-		//game.load.script('StartMenu', 'mainmenu.js');
 	},
 
-	addMenuOption: function(text, callback) {
-		var optionStyle = { font: '30pt TheMinion', fill: 'white', align: 'left', stroke: 'rgba(0,0,0,0)', srokeThickness: 4};
-		var txt = game.add.text(game.world.centerX, (this.optionCount * 80) + 200, text, optionStyle);
-		txt.anchor.setTo(0.5);
-		txt.stroke = "rgba(0,0,0,0";
-		txt.strokeThickness = 4;
-	    var onOver = function (target) {
-	    	target.fill = "#FEFFD5";
-	    	target.stroke = "rgba(200,200,200,0.5)";
-	    	txt.useHandCursor = true;
-	    };
-	    var onOut = function (target) {
-	    	target.fill = "white";
-	    	target.stroke = "rgba(0,0,0,0)";
-	    	txt.useHandCursor = false;
-	    };
-	    //txt.useHandCursor = true;
-	    txt.inputEnabled = true;
-	    txt.events.onInputUp.add(callback, this);
-	    txt.events.onInputOver.add(onOver, this);
-	    txt.events.onInputOut.add(onOut, this);
-
-		this.optionCount ++;
-  	},
-
 	create() {
-		
-
-		//game.add.sprite(0, 0, 'bgImage');
-		//game.state.add('StartMenu', StartMenu);
-		//game.state.start('StartMenu');
-
 		/*
 		//order matters, first is in back.
 		game.add.sprite(0, 0, 'bgImage');
-		var playbutton = game.add.sprite(buttonX[0], buttonY[0], 'playImage');
-		game.add.sprite(buttonX[1], buttonY[1], 'instructImage');
-		game.add.sprite(buttonX[2], buttonY[2], 'settingsImage');
-		game.add.sprite(buttonX[3], buttonY[3], 'creditsImage');
-
-		playbutton.inputEnabled = true;
-		playbutton.events.onInputDown.add(playButtonListener, this);
 		*/
+		game.add.sprite(0, 0, 'ground1');
+		mainChar = game.add.sprite(100, 200, 'mainCharacter', 7);
+		//mainChar.animations.add('walk');
+		//mainChar.animations.play('walk', 50, true);
+		//mainChar.add.tween(sprite).to({ x: game.width }, 10000, Phaser.Easing.Linear.None, true);
+
 		this.stage.disableVisibilityChange = false;
-    	//game.add.sprite(0, 0, 'stars');
-    	this.addMenuOption('Next ->', function (e) {
-      		this.game.state.start("GameOver");
-    	});
 
 	}
 };
-
-//function playButtonListener () {
-//    console.log("Play Button Pressed");
-//}
-
-
 
 //------------
 //Game Loop
