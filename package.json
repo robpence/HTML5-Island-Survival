@@ -1,0 +1,14 @@
+{
+  "name": "islandapp",
+  "version": "1.0.0",
+  "description": "A game that takes place on a island",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Robert Pence",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.3"
+  }
+}
