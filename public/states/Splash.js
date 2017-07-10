@@ -30,6 +30,13 @@ Splash.prototype = {
     game.load.image('inventory1', "img/inventory.png");
     game.load.image('inventory2', "img/inventory2.png");
     game.load.spritesheet('mainCharacter', "img/mainCharacter.png", 24, 32, 12);
+    game.load.image('rock', "img/rock1.png");
+    game.load.image('clay', "img/clay1.png");
+    game.load.image('stick', "img/stick1.png");
+    game.load.image('vine', "img/vine1.png");
+    game.load.image('log', "img/log1.png");
+    game.load.image('palmleaf', "img/palmleave1.png");
+    game.load.image('craftingtable', "img/craftingtable1.png");
   },
 
   
