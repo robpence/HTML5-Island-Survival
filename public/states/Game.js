@@ -64,9 +64,9 @@ Game.prototype = {
 
 		this.stage.disableVisibilityChange = false;
 
-
-
-
+		messageLabel = game.add.text(400, 100, 'text', { font: '24px', fill: '#fff', stroke: 'black', strokeThickness: 4});
+		messageLabel.anchor.setTo(0.5, 0.5);
+		messageLabel.visible = false;
 	},
 
 	update() {
@@ -142,16 +142,20 @@ Game.prototype = {
 
 //function to flash a message on the screen
 function flashMessage(text){
-	messageLabel = game.add.text(400, 100, text, { font: '24px', fill: '#fff', stroke: 'black', strokeThickness: 4});
-	messageLabel.anchor.setTo(0.5, 0.5);
-	messageTimer = game.time.create(false);
-	messageTimer.loop(1000, deleteMessage, this);
-	messageTimer.start();
+	if(messageLabel.visible == true){
+		messageLabel.setText(text);
+	}else{
+		messageLabel.setText(text);
+		messageLabel.visible = true;
+		messageTimer = game.time.create(false);
+		messageTimer.loop(1000, deleteMessage, this);
+		messageTimer.start();
+	}
 }
 
 //deletes the message
 function deleteMessage(){
-	messageLabel.destroy();
+	messageLabel.visible = false;
 	messageTimer.destroy();
 }
 
