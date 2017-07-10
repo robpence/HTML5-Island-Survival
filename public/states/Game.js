@@ -41,7 +41,9 @@ Game.prototype = {
 	create() {
 		//order matters, first is in back.
 		//animations.add(name, frames, frameRate, loop, useNumericIndex)
-		game.add.sprite(0, 0, 'ground1');
+		game.add.tileSprite(0, 0, 1920, 1920, 'ground1');
+		game.world.setBounds(0, 0, 1920, 1920);
+		//game.physics.startSystem(Phaser.Physics.P2JS);
 
 		rock = game.add.sprite(400, 300, 'rock');
 		rock.visible = false;
@@ -56,7 +58,7 @@ Game.prototype = {
 		clay = game.add.sprite(700, 350, 'clay');
 		clay.visible = false;
 
-		craftingtable = game.add.sprite(150, 175, 'craftingtable');
+		craftingtable = game.add.sprite(160, 255, 'craftingtable');
 
 
 		mainChar = game.add.sprite(100, 200, 'mainCharacter', 7);
@@ -64,12 +66,15 @@ Game.prototype = {
 		mainChar.animations.add('walkEast', [3, 4, 5], 15);
 		mainChar.animations.add('walkSouth', [6, 7, 8], 15);
 		mainChar.animations.add('walkWest', [9, 10, 11], 15);
+		//game.physics.p2.enable(mainChar);
+		game.camera.follow(mainChar);
 
 		this.stage.disableVisibilityChange = false;
 
 		messageLabel = game.add.text(400, 100, 'text', { font: '24px', fill: '#fff', stroke: 'black', strokeThickness: 4});
 		messageLabel.anchor.setTo(0.5, 0.5);
 		messageLabel.visible = false;
+		messageLabel.fixedToCamera = true;
 	},
 
 	update() {
@@ -119,16 +124,19 @@ Game.prototype = {
 			game.paused = true;
 
 			//display the inventory menu
-			inventorymenu = game.add.sprite(800/2, 600/2, 'inventory1');
-			inventorymenu2 = game.add.sprite(400, 385, 'inventory2');
-			inventorymenu.anchor.setTo(0.5, 0.5);
-			inventorymenu2.anchor.setTo(0.5, 0.5);
+			inventoryMenu = game.add.sprite(800/2, 600/2, 'inventory1');
+			inventoryMenu2 = game.add.sprite(400, 385, 'inventory2');
+			inventoryMenu.anchor.setTo(0.5, 0.5);
+			inventoryMenu2.anchor.setTo(0.5, 0.5);
+			inventoryMenu.fixedToCamera = true;
+			inventoryMenu2.fixedToCamera = true;
 
 			//display a button to resume the game
-			resume_label = game.add.text(400, 500, 'Resume', { font: '24px', fill: '#fff', stroke: 'black', strokeThickness: 4});
-			resume_label.anchor.setTo(0.5, 0.5);
-			resume_label.inputEnabled = true;
-			resume_label.events.onInputDown.add(function(){
+			resumeLabel = game.add.text(400, 500, 'Resume', { font: '24px', fill: '#fff', stroke: 'black', strokeThickness: 4});
+			resumeLabel.anchor.setTo(0.5, 0.5);
+			resumeLabel.inputEnabled = true;
+			resumeLabel.fixedToCamera = true;
+			resumeLabel.events.onInputDown.add(function(){
 				unpause(game);
 			});
 		}
@@ -139,7 +147,12 @@ Game.prototype = {
 		}
 
 
-	} //end update
+	}, //end update
+
+	render() {
+		//game.debug.cameraInfo(game.camera, 32, 32);
+		//game.debug.spriteCoords(mainChar, 32, 500);
+	}
 
 };
 
@@ -165,9 +178,9 @@ function deleteMessage(){
 //function to unpause the game
 function unpause(event) {
 	//remove the menus and labels
-	inventorymenu.destroy();
-	inventorymenu2.destroy();
-	resume_label.destroy();
+	inventoryMenu.destroy();
+	inventoryMenu2.destroy();
+	resumeLabel.destroy();
 
 	//unpause the game
 	game.paused = false;
