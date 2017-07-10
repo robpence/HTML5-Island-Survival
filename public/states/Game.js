@@ -29,6 +29,9 @@ isPalmLeaf = true;
 isLog = true;
 isVine  =true;
 
+var mainChar;
+var cursors;
+
 Game.prototype = {
 	
 	preload() {
