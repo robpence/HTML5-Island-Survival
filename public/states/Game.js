@@ -46,19 +46,59 @@ Game.prototype = {
 	},
 
 	create() {
-		/*
 		//order matters, first is in back.
-		game.add.sprite(0, 0, 'bgImage');
-		*/
+		//animations.add(name, frames, frameRate, loop, useNumericIndex)
 		game.add.sprite(0, 0, 'ground1');
 		mainChar = game.add.sprite(100, 200, 'mainCharacter', 7);
-		//mainChar.animations.add('walk');
+		mainChar.animations.add('walkNorth', [0, 1, 2], 15);
+		mainChar.animations.add('walkEast', [3, 4, 5], 15);
+		mainChar.animations.add('walkSouth', [6, 7, 8], 15);
+		mainChar.animations.add('walkWest', [9, 10, 11], 15);
 		//mainChar.animations.play('walk', 50, true);
 		//mainChar.add.tween(sprite).to({ x: game.width }, 10000, Phaser.Easing.Linear.None, true);
 
 		this.stage.disableVisibilityChange = false;
 
+	},
+
+	update() {
+		if(game.input.keyboard.isDown(Phaser.Keyboard.LEFT)){
+			mainChar.animations.play('walkWest', 15, true);
+			mainChar.x -= 4;
+		}
+		else if(game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
+			mainChar.animations.play('walkEast', 15, true);
+			mainChar.x += 4;
+		}
+
+		if(game.input.keyboard.isDown(Phaser.Keyboard.UP)){
+			mainChar.animations.play('walkNorth', 15, true);
+			mainChar.y -= 4;
+		}
+		else if(game.input.keyboard.isDown(Phaser.Keyboard.DOWN)){
+			mainChar.animations.play('walkSouth', 15, true);
+			mainChar.y += 4;
+		}
+		game.input.keyboard.onUpCallback = function( e ){ 
+			if(e.keyCode == Phaser.Keyboard.LEFT){ 
+				//stop left animation
+				mainChar.animations.stop('walkWest');               
+	        }
+	        if(e.keyCode == Phaser.Keyboard.RIGHT){ 
+				//stop right animation
+				mainChar.animations.stop('walkEast');                 
+	        }
+	        if(e.keyCode == Phaser.Keyboard.UP){ 
+				//stop up animation
+				mainChar.animations.stop('walkNorth');                 
+	        }
+	        if(e.keyCode == Phaser.Keyboard.DOWN){ 
+				//stop down animation
+				mainChar.animations.stop('walkSouth');                 
+	        }
+		}
 	}
+
 };
 
 //------------
