@@ -27,6 +27,8 @@ Splash.prototype = {
     game.load.image('settingsImage', PATH_SETT);
     game.load.image('creditsImage', PATH_CRED);
     game.load.image('ground1', "img/ground1.png");
+    game.load.image('inventory1', "img/inventory.png");
+    game.load.image('inventory2', "img/inventory2.png");
     game.load.spritesheet('mainCharacter', "img/mainCharacter.png", 24, 32, 12);
   },
 

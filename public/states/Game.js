@@ -57,6 +57,7 @@ Game.prototype = {
 		//mainChar.animations.play('walk', 50, true);
 		//mainChar.add.tween(sprite).to({ x: game.width }, 10000, Phaser.Easing.Linear.None, true);
 
+
 		this.stage.disableVisibilityChange = false;
 
 	},
@@ -97,50 +98,49 @@ Game.prototype = {
 				mainChar.animations.stop('walkSouth');                 
 	        }
 		}
-	}
+
+		if(game.input.keyboard.isDown(Phaser.Keyboard.P) || game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
+			//if P or ESC is pressed we pause the game
+			game.paused = true;
+
+			//display the inventory menu
+			inventorymenu = game.add.sprite(800/2, 600/2, 'inventory1');
+			inventorymenu2 = game.add.sprite(400, 385, 'inventory2');
+			inventorymenu.anchor.setTo(0.5, 0.5);
+			inventorymenu2.anchor.setTo(0.5, 0.5);
+
+			//display a button to resume the game
+			resume_label = game.add.text(400, 500, 'Resume', { font: '24px', fill: '#fff', stroke: 'black', strokeThickness: 4});
+			resume_label.anchor.setTo(0.5, 0.5);
+			resume_label.inputEnabled = true;
+			resume_label.events.onInputDown.add(function(){
+				unpause(game);
+			});
+
+		}
+
+		//function to unpause the game
+		function unpause(event) {
+			//remove the menus and labels
+			inventorymenu.destroy();
+			inventorymenu2.destroy();
+			resume_label.destroy();
+
+			//unpause the game
+			game.paused = false;
+		}
+
+
+	}, //end update
 
 };
 
-//------------
-//Game Loop
-//------------
-function startGame(){
-	game = setInterval(updateGame, TIME_PER_FRAME);
-}
-/*
-charX = CHAR_START_X;
-charY = CHAR_START_Y;
-
-currX = IMAGE_START_X;
-currY = IMAGE_START_EAST_Y;
-
-var buttonX = [192,110,149,160];
-var buttonY = [100,140,180,220];
-var buttonWidth = [96,260,182,160];
-var buttonHeight = [40,40,40,40];
-
-var speed = 1;
-var frames = 30;
-var menu = 0;
-var fadeId = 0;
-var time = 0.0;
-
-//Move this somewhere else.
-isRock = true;
-isClay = true;
-isStick = true;
-isPalmLeaf = true;
-isLog = true;
-isVine  =true;
-*/
 function updateGame()
 {		
 	console.log('updateGame called');
 	updateClock();
-	//Clear Canvas
-	ctx.fillStyle = "grey";
-	ctx.fillRect(0, 0, stage.width, stage.height);
 	
+	/*
 	if (isMoving)
 	{
 		if (facing == "N")
@@ -188,7 +188,7 @@ function updateGame()
 		
 		if (currX >= SPRITE_WIDTH)
 			currX = 0;
-	}
+	}*/
 
 	if(map == 1){
 		drawItems();
