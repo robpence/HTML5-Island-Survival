@@ -8,7 +8,7 @@ An HTML5 Island Survival game made with Phaser.io
     	and type 'node app.js'
 3. In a web browser go to http://localhost:8080/
 
-#Basic Plan / In progress:
+# Basic Plan / In progress:
 1. Better artwork for everything
 2. An intro scene to explain whats happening
 3. Crafting system and menu
