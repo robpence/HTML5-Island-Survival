@@ -100,3 +100,27 @@ var HEALTH = 100;
 	CHARCOALHOUSE = false;
 	FORGE = false;
 	COOKSTOVE = false;
+
+
+	//MISC ITEMS
+	//ROCK = 0;
+	//CLAY = 0;
+	//STICK = 0;
+	//PALMLEAF = 0;
+	//LOG = 0;
+	//VINE = 0;
+	//IRONORE = 0;
+	//COPPERORE = 0;
+	//TINORE = 0;
+
+	var MiscItems = {
+		"ROCK": 0,
+		"CLAY": 0,
+		"STICK": 0,
+		"PALMLEAF": 0,
+		"LOG": 0,
+		"VINE": 0,
+		"IRONORE": 0,
+		"COPPERORE": 0,
+		"TINORE": 0
+	};
