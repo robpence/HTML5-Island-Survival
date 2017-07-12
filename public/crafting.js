@@ -7,27 +7,27 @@
 //-------------------------------------
 //rocks
 function pickUpRock(){
-	ROCK += 3;
+	MiscItems.ROCK += 3;
 }
 //clay
 function pickUpClay(){
-	CLAY += 1;
+	MiscItems.CLAY += 1;
 }
 //sticks
 function pickUpStick(){
-	STICK += 4;
+	MiscItems.STICK += 4;
 }
 //palmleaves
 function pickUpPalmLeaf(){
-	PALMLEAF += 3;
+	MiscItems.PALMLEAF += 3;
 }
 //logs
 function pickUpLog(){
-	LOG += 2;
+	MiscItems.LOG += 2;
 }
 //vines
 function pickUpVine(){
-	VINE += 2;
+	MiscItems.VINE += 2;
 }
 //iron
 function mineIronOre(){

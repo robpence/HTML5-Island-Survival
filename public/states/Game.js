@@ -4,6 +4,7 @@ var game, isClicked, boxArray, score, facing, currX, currY, charX, charY, isMovi
 
 isClicked = false;
 gamePaused = false;
+isInventoryMenu = false;
 map = 1;
 var spritenumber = 1;
 var invCounter = 0;
@@ -99,33 +100,32 @@ Game.prototype = {
 		}
 
 		//if P or ESC is pressed we pause the game
+		window.onkeydown = function(event) {  
+			if (event.keyCode == 80){       
+				if(game.paused){
+					unpause(game);
+				} else {
+					game.paused = true;
+
+					//display a button to resume the game
+					resumeLabel = game.add.text(400, 550, 'Resume', { font: '24px', fill: '#fff', stroke: 'black', strokeThickness: 4});
+					resumeLabel.anchor.setTo(0.5, 0.5);
+					resumeLabel.inputEnabled = true;
+					resumeLabel.fixedToCamera = true;
+					resumeLabel.events.onInputDown.add(function(){
+						unpause(game);
+					});
+				}
+			}
+		}
+
+/*
 		if(game.input.keyboard.isDown(Phaser.Keyboard.P) || game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
 			game.paused = true;
 
 			//display the inventory menu
-			inventoryMenu = game.add.sprite(50, 25, 'inventoryMenu');
-			inventoryMenu.fixedToCamera = true;
-
-			//drawInventory();
-
-			var object = MiscItems
-			invCounter = 0;
-			for(var key in object) {
-				console.log(key);
-				var invtext = key + " :"
-				window['itemLabel' + invCounter] = game.add.text(90, 100 + invCounter * 30, invtext, { font: '16px', fill: 'black'});
-				window['itemLabel' + invCounter].fixedToCamera = true;
-
-    			if(object.hasOwnProperty(key)) {
-        			var property = object[key];
-        			console.log(property);
-        			window['itemNumber' + invCounter] = game.add.text(200, 100 + invCounter * 30, property, { font: '16px', fill: 'black'});
-        			window['itemNumber' + invCounter].fixedToCamera = true;
-    			}
-
-    			invCounter++;
-			}
-
+			//inventoryMenu = game.add.sprite(50, 25, 'inventoryMenu');
+			//inventoryMenu.fixedToCamera = true;
 
 
 			//display a button to resume the game
@@ -136,6 +136,92 @@ Game.prototype = {
 			resumeLabel.events.onInputDown.add(function(){
 				unpause(game);
 			});
+		}*/
+
+		//if I is pressed open the inventory
+		/*
+		if(game.input.keyboard.isDown(Phaser.Keyboard.I)) {
+			if(!isInventoryMenu){
+				isInventoryMenu = true;
+				game.paused = true;
+
+				//display the inventory menu
+				inventoryMenu = game.add.sprite(50, 25, 'inventoryMenu');
+				inventoryMenu.fixedToCamera = true;
+
+				//drawInventory();
+
+				var object = MiscItems
+				invCounter = 0;
+				for(var key in object) {
+					console.log(key);
+					var invtext = key + " :"
+					window['itemLabel' + invCounter] = game.add.text(90, 100 + invCounter * 30, invtext, { font: '16px', fill: 'black'});
+					window['itemLabel' + invCounter].fixedToCamera = true;
+
+	    			if(object.hasOwnProperty(key)) {
+	        			var property = object[key];
+	        			console.log(property);
+	        			window['itemNumber' + invCounter] = game.add.text(200, 100 + invCounter * 30, property, { font: '16px', fill: 'black'});
+	        			window['itemNumber' + invCounter].fixedToCamera = true;
+	    			}
+
+	    			invCounter++;
+				}
+
+				//display a button to resume the game
+				resumeLabel = game.add.text(400, 550, 'Resume', { font: '24px', fill: '#fff', stroke: 'black', strokeThickness: 4});
+				resumeLabel.anchor.setTo(0.5, 0.5);
+				resumeLabel.inputEnabled = true;
+				resumeLabel.fixedToCamera = true;
+				resumeLabel.events.onInputDown.add(function(){
+					unpauseInventory(game);
+				});
+			}else{
+				unpauseInventory(game);
+			}
+		}*/
+		window.onkeydown = function(event) {  
+			if (event.keyCode == 73){       
+				if(!isInventoryMenu){
+					isInventoryMenu = true;
+					game.paused = true;
+
+					//display the inventory menu
+					inventoryMenu = game.add.sprite(50, 25, 'inventoryMenu');
+					inventoryMenu.fixedToCamera = true;
+
+					//drawInventory();
+
+					var object = MiscItems
+					invCounter = 0;
+					for(var key in object) {
+						console.log(key);
+						var invtext = key + " :"
+						window['itemLabel' + invCounter] = game.add.text(90, 100 + invCounter * 30, invtext, { font: '16px', fill: 'black'});
+						window['itemLabel' + invCounter].fixedToCamera = true;
+
+	    				if(object.hasOwnProperty(key)) {
+	        				var property = object[key];
+	        				console.log(property);
+	        				window['itemNumber' + invCounter] = game.add.text(200, 100 + invCounter * 30, property, { font: '16px', fill: 'black'});
+	        				window['itemNumber' + invCounter].fixedToCamera = true;
+	    				}
+	    				invCounter++;
+					}
+
+					//display a button to resume the game
+					resumeLabel = game.add.text(400, 550, 'Resume', { font: '24px', fill: '#fff', stroke: 'black', strokeThickness: 4});
+					resumeLabel.anchor.setTo(0.5, 0.5);
+					resumeLabel.inputEnabled = true;
+					resumeLabel.fixedToCamera = true;
+					resumeLabel.events.onInputDown.add(function(){
+						unpauseInventory(game);
+					});
+				} else {
+					unpauseInventory(game);
+				}
+			}
 		}
 
 		if(map == 1){
@@ -175,6 +261,20 @@ function deleteMessage(){
 //function to unpause the game
 function unpause(event) {
 	//remove the menus and labels
+	//inventoryMenu.destroy();
+	resumeLabel.destroy();
+	//for(var i = 0; i < invCounter; i++){
+	//	window['itemLabel' + i].destroy();
+	//	window['itemNumber' + i].destroy();
+	//}
+
+	//unpause the game
+	game.paused = false;
+}
+
+//function to unpause the game
+function unpauseInventory(event) {
+	//remove the menus and labels
 	inventoryMenu.destroy();
 	resumeLabel.destroy();
 	for(var i = 0; i < invCounter; i++){
@@ -183,6 +283,7 @@ function unpause(event) {
 	}
 
 	//unpause the game
+	isInventoryMenu = false;
 	game.paused = false;
 }
 
