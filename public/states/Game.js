@@ -6,6 +6,8 @@ isClicked = false;
 gamePaused = false;
 isInventoryMenu = false;
 map = 1;
+day = 1;
+time = 8;
 var spritenumber = 1;
 var invCounter = 0;
 
@@ -37,8 +39,8 @@ Game.prototype = {
 		game.world.setBounds(0, 0, 1920, 1920);
 
 		createPickUps();
-
-		craftingtable = game.add.sprite(160, 255, 'craftingtable');
+		createBuildings();
+		
 
 		//
 		mainChar = game.add.sprite(100, 200, 'mainCharacter', 7);
@@ -49,12 +51,17 @@ Game.prototype = {
 		//game.physics.p2.enable(mainChar);
 		game.camera.follow(mainChar);
 
+		dayLabel = game.add.text(25, 25, 'Day: 1', {font: "16px Arial", fill: 'black'});
+		timeLabel = game.add.text(95, 25, 'Time: 8:00', {font: "16px Arial", fill: 'black'});
+		game.time.events.loop(Phaser.Timer.SECOND, updateTime, this);
+
 		this.stage.disableVisibilityChange = false;
 
 		messageLabel = game.add.text(400, 100, 'text', { font: '24px', fill: '#fff', stroke: 'black', strokeThickness: 4});
 		messageLabel.anchor.setTo(0.5, 0.5);
 		messageLabel.visible = false;
 		messageLabel.fixedToCamera = true;
+
 	},
 
 	update() {
@@ -99,14 +106,15 @@ Game.prototype = {
 	        }
 		}
 
+
 		//if P or ESC is pressed we pause the game
-		window.onkeydown = function(event) {  
+		/*
+		window.onkeydown = function(event) {
+			console.log(event.keyCode);
 			if (event.keyCode == 80){       
 				if(game.paused){
 					unpause(game);
 				} else {
-					game.paused = true;
-
 					//display a button to resume the game
 					resumeLabel = game.add.text(400, 550, 'Resume', { font: '24px', fill: '#fff', stroke: 'black', strokeThickness: 4});
 					resumeLabel.anchor.setTo(0.5, 0.5);
@@ -115,31 +123,30 @@ Game.prototype = {
 					resumeLabel.events.onInputDown.add(function(){
 						unpause(game);
 					});
+
+					game.paused = true;
 				}
+			}
+		}*/
+
+		if(game.input.keyboard.isDown(Phaser.Keyboard.P) || game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
+			if(game.paused == false){
+				game.paused = true;
+
+				//display a button to resume the game
+				resumeLabel = game.add.text(400, 550, 'Resume', { font: '24px', fill: '#fff', stroke: 'black', strokeThickness: 4});
+				resumeLabel.anchor.setTo(0.5, 0.5);
+				resumeLabel.inputEnabled = true;
+				resumeLabel.fixedToCamera = true;
+				resumeLabel.events.onInputDown.add(function(){
+					unpause(game);
+				});
+			}else{
+				unpause(game);
 			}
 		}
 
-/*
-		if(game.input.keyboard.isDown(Phaser.Keyboard.P) || game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
-			game.paused = true;
-
-			//display the inventory menu
-			//inventoryMenu = game.add.sprite(50, 25, 'inventoryMenu');
-			//inventoryMenu.fixedToCamera = true;
-
-
-			//display a button to resume the game
-			resumeLabel = game.add.text(400, 550, 'Resume', { font: '24px', fill: '#fff', stroke: 'black', strokeThickness: 4});
-			resumeLabel.anchor.setTo(0.5, 0.5);
-			resumeLabel.inputEnabled = true;
-			resumeLabel.fixedToCamera = true;
-			resumeLabel.events.onInputDown.add(function(){
-				unpause(game);
-			});
-		}*/
-
 		//if I is pressed open the inventory
-		/*
 		if(game.input.keyboard.isDown(Phaser.Keyboard.I)) {
 			if(!isInventoryMenu){
 				isInventoryMenu = true;
@@ -180,49 +187,8 @@ Game.prototype = {
 			}else{
 				unpauseInventory(game);
 			}
-		}*/
-		window.onkeydown = function(event) {  
-			if (event.keyCode == 73){       
-				if(!isInventoryMenu){
-					isInventoryMenu = true;
-					game.paused = true;
-
-					//display the inventory menu
-					inventoryMenu = game.add.sprite(50, 25, 'inventoryMenu');
-					inventoryMenu.fixedToCamera = true;
-
-					//drawInventory();
-
-					var object = MiscItems
-					invCounter = 0;
-					for(var key in object) {
-						console.log(key);
-						var invtext = key + " :"
-						window['itemLabel' + invCounter] = game.add.text(90, 100 + invCounter * 30, invtext, { font: '16px', fill: 'black'});
-						window['itemLabel' + invCounter].fixedToCamera = true;
-
-	    				if(object.hasOwnProperty(key)) {
-	        				var property = object[key];
-	        				console.log(property);
-	        				window['itemNumber' + invCounter] = game.add.text(200, 100 + invCounter * 30, property, { font: '16px', fill: 'black'});
-	        				window['itemNumber' + invCounter].fixedToCamera = true;
-	    				}
-	    				invCounter++;
-					}
-
-					//display a button to resume the game
-					resumeLabel = game.add.text(400, 550, 'Resume', { font: '24px', fill: '#fff', stroke: 'black', strokeThickness: 4});
-					resumeLabel.anchor.setTo(0.5, 0.5);
-					resumeLabel.inputEnabled = true;
-					resumeLabel.fixedToCamera = true;
-					resumeLabel.events.onInputDown.add(function(){
-						unpauseInventory(game);
-					});
-				} else {
-					unpauseInventory(game);
-				}
-			}
 		}
+			
 
 		if(map == 1){
 			drawItems();
@@ -238,6 +204,15 @@ Game.prototype = {
 	}
 
 };
+function updateTime(){
+	if(time == 12){
+		time = 1;
+		timeLabel.setText('Time: ' + time + ':00');
+	}else{
+		time += 1;
+		timeLabel.setText('Time: ' + time + ':00');
+	}
+}
 
 //function to flash a message on the screen
 function flashMessage(text){
@@ -260,16 +235,10 @@ function deleteMessage(){
 
 //function to unpause the game
 function unpause(event) {
-	//remove the menus and labels
-	//inventoryMenu.destroy();
-	resumeLabel.destroy();
-	//for(var i = 0; i < invCounter; i++){
-	//	window['itemLabel' + i].destroy();
-	//	window['itemNumber' + i].destroy();
-	//}
-
-	//unpause the game
-	game.paused = false;
+	if(game.paused = true){
+		resumeLabel.destroy();
+		game.paused = false;
+	}
 }
 
 //function to unpause the game
@@ -308,6 +277,10 @@ function createPickUps(){
 	vine.visible = false;
 	palmleaf.visible = false;
 	clay.visible = false;
+}
+
+function createBuildings(){
+	craftingtable = game.add.sprite(160, 255, 'craftingtable');
 }
 
 function drawItems(){
@@ -386,9 +359,87 @@ function drawItems(){
 }
 
 function drawBuildings(){
-	//draw the biuldings
+	if(checkOverlap(mainChar, craftingtable)){
+		drawCraftingMenu();
+	}
 }
 function drawCraftingMenu(){
+
+	game.paused = true;
+
 	//display the crafting menu
+	inventoryMenu = game.add.sprite(50, 25, 'inventoryMenu');
+	inventoryMenu.fixedToCamera = true;
+
+
+	//Add Crafting Menu Buttons
+	craftStonePickButton = game.add.button(90, 100, 'baseButton', craftStonePick, this);
+	craftStonePickButton.onInputOver.add(over, this);
+
+	craftStoneAxeButton = game.add.button(90, 140, 'baseButton', craftStoneAxe, this);
+	craftStoneAxeButton.onInputOver.add(over, this);
+
+	craftStoneKnifeButton = game.add.button(90, 180, 'baseButton', craftStoneKnife, this);
+	craftStoneKnifeButton.onInputOver.add(over, this);
+
+	craftStoneHammerButton = game.add.button(90, 220, 'baseButton', craftStoneHammer, this);
+	craftStoneHammerButton.onInputOver.add(over, this);
+
+	craftMetalPickButton = game.add.button(90, 260, 'baseButton', craftMetalPick, this);
+	craftMetalPickButton.onInputOver.add(over, this);
+
+	craftMetalAxeButton = game.add.button(90, 300, 'baseButton', craftMetalAxe, this);
+	craftMetalAxeButton.onInputOver.add(over, this);
+
+	craftMetalKnifeButton = game.add.button(90, 340, 'baseButton', craftMetalKnife, this);
+	craftMetalKnifeButton.onInputOver.add(over, this);
+
+	craftFishingRodButton = game.add.button(90, 380, 'baseButton', craftFishingRod, this);
+	craftFishingRodButton.onInputOver.add(over, this);
+
+	craftWoodHookButton = game.add.button(90, 420, 'baseButton', craftWoodHook, this);
+	craftWoodHookButton.onInputOver.add(over, this);
+
+	craftMetalHookButton = game.add.button(90, 460, 'baseButton', craftMetalHook, this);
+	craftMetalHookButton.onInputOver.add(over, this);
+	//Stop Adding Crafting Menu Buttons
+
+
+	doneLabel = game.add.text(400, 550, 'Done', { font: '24px', fill: '#fff', stroke: 'black', strokeThickness: 4});
+	doneLabel.anchor.setTo(0.5, 0.5);
+	doneLabel.inputEnabled = true;
+	doneLabel.fixedToCamera = true;
+	doneLabel.events.onInputDown.add(function(){
+		leaveCraftingMenu(game);
+	});
+}
+function over(){
+	console.log('button over');
+}
+
+function leaveCraftingMenu(event) {
+	//remove the menus and labels
+	inventoryMenu.destroy();
+	doneLabel.destroy();
+
+	craftStonePickButton.destroy();
+	craftStoneAxeButton.destroy();
+	craftStoneKnifeButton.destroy();
+	craftStoneHammerButton.destroy();
+	craftMetalPickButton.destroy();
+	craftMetalAxeButton.destroy();
+	craftMetalKnifeButton.destroy();
+	craftFishingRodButton.destroy();
+	craftWoodHookButton.destroy();
+	craftMetalHookButton.destroy();
+	//for(var i = 0; i < invCounter; i++){
+	//	window['itemLabel' + i].destroy();
+	//	window['itemNumber' + i].destroy();
+	//}
+
+	//unpause the game
+	mainChar.x = 175;
+	mainChar.y = 300;
+	game.paused = false;
 }
 

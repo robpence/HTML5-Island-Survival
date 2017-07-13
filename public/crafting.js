@@ -31,15 +31,15 @@ function pickUpVine(){
 }
 //iron
 function mineIronOre(){
-	IRONORE += 1;
+	MiscItems.IRONORE += 1;
 }
 //copper
 function mineCopperOre(){
-	COPPERORE += 1;
+	MiscItems.COPPERORE += 1;
 }
 //tin
 function mineTinOre(){
-	TINORE += 1;
+	MiscItems.TINORE += 1;
 }
 
 //-------------------------------------
@@ -47,113 +47,133 @@ function mineTinOre(){
 //-------------------------------------
 //stonepick
 function craftStonePick(){
-	ROCK -= 2;
-	STICK -= 1;
-	VINE -= 1;
-	STONEPICK += 1;
+	MiscItems.ROCK -= 2;
+	MiscItems.STICK -= 1;
+	MiscItems.VINE -= 1;
+	Tools.STONEPICK += 1;
 }
 //stoneaxe
 function craftStoneAxe(){
-	ROCK -= 2;
-	STICK -= 1;
-	VINE -= 1;
-	STONEAXE += 1;
+	MiscItems.ROCK -= 2;
+	MiscItems.STICK -= 1;
+	MiscItems.VINE -= 1;
+	Tools.STONEAXE += 1;
 }
 //stoneknife
 function craftStoneKnife(){
-	ROCK -= 1;
-	STICK -= 1;
-	VINE -= 1;
-	STONEKNIFE += 1;
+	MiscItems.ROCK -= 1;
+	MiscItems.STICK -= 1;
+	MiscItems.VINE -= 1;
+	Tools.STONEKNIFE += 1;
 }
 //stonehammer
 function craftStoneHammer(){
-	ROCK -= 2;
-	STICK -= 1;
-	VINE -= 1;
-	STONEHAMMER += 1;
+	MiscItems.ROCK -= 2;
+	MiscItems.STICK -= 1;
+	MiscItems.VINE -= 1;
+	Tools.STONEHAMMER += 1;
 }
 //metalpick
 function craftMetalPick(){
-	IRONBAR -= 1;
-	STICK -= 1;
-	VINE -= 1;
-	CHARCOAL -= 3;
-	METALPICK += 1;
+	CraftedItems.IRONBAR -= 1;
+	MiscItems.STICK -= 1;
+	MiscItems.VINE -= 1;
+	CraftedItems.CHARCOAL -= 3;
+	Tools.METALPICK += 1;
 }
 //metalaxe
 function craftMetalAxe(){
-	IRONBAR -= 1;
-	STICK -= 1;
-	VINE -= 1;
-	CHARCOAL -= 3;
-	METALAXE += 1;
+	CraftedItems.IRONBAR -= 1;
+	MiscItems.STICK -= 1;
+	MiscItems.VINE -= 1;
+	CraftedItems.CHARCOAL -= 3;
+	Tools.METALAXE += 1;
 }
 //metalknife
-function craftMetalPick(){
-	IRONBAR -= 1;
-	STICK -= 1;
-	VINE -= 1;
-	CHARCOAL -= 3;
-	METALKNIFE += 1;
+function craftMetalKnife(){
+	CraftedItems.IRONBAR -= 1;
+	MiscItems.STICK -= 1;
+	MiscItems.VINE -= 1;
+	CraftedItems.CHARCOAL -= 3;
+	Tools.METALKNIFE += 1;
 }
+
+function craftFishingRod(){
+	MiscItems.ROCK -= 2;
+	MiscItems.STICK -= 2;
+	MiscItems.VINE -= 3;
+	Tools.FISHINGROD += 1;
+}
+
+function craftWoodHook(){
+	CraftedItems.BOARDS -= 1;
+	Tools.WOODENFISHHOOK += 1;
+}
+
+function craftMetalHook(){
+	CraftedItems.IRONBAR -= 1;
+	Tools.METALFISHHOOK += 1;
+}
+
+
+//fishing pole, fish hooks
 
 //-------------------------------------
 //Items you can craft
 //-------------------------------------
 //rope
 function craftRope(){
-	VINE -= 3;
-	ROPE += 1;
+	MiscItems.VINE -= 3;
+	CraftedItems.ROPE += 1;
 }
 //boards
 function craftBoards(){
-	LOG -= 1;
-	BOARDS += 5;
+	MiscItems.LOG -= 1;
+	CraftedItems.BOARDS += 5;
 }
 //charcoal
 function craftCharcoal(){
-	STICKS -= 5;
-	CHARCOAL += 5;
+	MiscItems.STICKS -= 5;
+	CraftedItems.CHARCOAL += 5;
 }
 //ironbar
 function craftIronBar(){
-	IRONORE -= 4;
-	IRONBAR += 1;
+	MiscItems.IRONORE -= 4;
+	CraftedItems.IRONBAR += 1;
 }
 //copperbar
 function craftCopperBar(){
-	COPPERORE -= 4;
-	COPPERBAR += 1;
+	MiscItems.COPPERORE -= 4;
+	CraftedItems.COPPERBAR += 1;
 }
 //tinbar
 function craftTinBar(){
-	TINORE -= 4;
-	TINBAR += 1;
+	MiscItems.TINORE -= 4;
+	CraftedItems.TINBAR += 1;
 }
 //claypot
 function craftClayPot(){
-	CLAY -= 3;
-	CLAYPOT += 1;
+	MiscItems.CLAY -= 3;
+	CraftedItems.CLAYPOT += 1;
 }
 //clayplate
 function craftClayPlate(){
-	CLAY -= 1;
-	CLAYPLATE += 1;
+	MiscItems.CLAY -= 1;
+	CraftedItems.CLAYPLATE += 1;
 }
 //claybowl
 function craftClayBowl(){
-	CLAY -= 1;
-	CLAYBOWL += 1;
+	MiscItems.CLAY -= 1;
+	CraftedItems.CLAYBOWL += 1;
 }
 //vinebasket
 function craftVineBasket(){
-	VINE -= 5;
-	VINEBASKET += 1;
+	MiscItems.VINE -= 5;
+	CraftedItems.VINEBASKET += 1;
 }
 function craftNails(){
-	IRONBAR -= 1;
-	NAILS += 5;
+	CraftedItems.IRONBAR -= 1;
+	CraftedItems.NAILS += 5;
 }
 
 //-------------------------------------

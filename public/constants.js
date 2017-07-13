@@ -54,38 +54,6 @@ var HEALTH = 100;
 	BUILDING = 1;
 	COOKING = 1;
 
-	//TOOLS
-	STONEPICK = 0;
-	STONEAXE = 0;
-	STONEKNIFE = 0;
-	STONEHAMMER = 0;
-	METALPICK = 0;
-	METALAXE = 0;
-	METALKNIFE = 0;
-
-	//MISC ITEMS
-	ROCK = 0;
-	CLAY = 0;
-	STICK = 0;
-	PALMLEAF = 0;
-	LOG = 0;
-	VINE = 0;
-	IRONORE = 0;
-	COPPERORE = 0;
-	TINORE = 0;
-
-	//CRAFTED ITEMS
-	ROPE = 0;
-	BOARDS = 0;
-	CHARCOAL = 0;
-	IRONBAR = 0;
-	COPPERBAR = 0;
-	TINBAR = 0;
-	CLAYPOT = 0;
-	CLAYPLATE = 0;
-	CLAYBOWL = 0;
-	VINEBASKET = 0;
-
 	//CRAFTED PERMANENT ITEMS
 	SHACK = false;
 	CAMPFIRE  = false;
@@ -101,18 +69,6 @@ var HEALTH = 100;
 	FORGE = false;
 	COOKSTOVE = false;
 
-
-	//MISC ITEMS
-	//ROCK = 0;
-	//CLAY = 0;
-	//STICK = 0;
-	//PALMLEAF = 0;
-	//LOG = 0;
-	//VINE = 0;
-	//IRONORE = 0;
-	//COPPERORE = 0;
-	//TINORE = 0;
-
 	var MiscItems = {
 		"ROCK": 0,
 		"CLAY": 0,
@@ -123,4 +79,30 @@ var HEALTH = 100;
 		"IRONORE": 0,
 		"COPPERORE": 0,
 		"TINORE": 0
+	};
+
+	var CraftedItems = {
+		"ROPE" : 0,
+		"BOARDS" : 0,
+		"CHARCOAL" : 0,
+		"IRONBAR" : 0,
+		"COPPERBAR" : 0,
+		"TINBAR" : 0,
+		"CLAYPOT" : 0,
+		"CLAYPLATE" : 0,
+		"CLAYBOWL" : 0,
+		"VINEBASKET" : 0,
+	};
+
+	var Tools = {
+		"STONEPICK": 0,
+		"STONEAXE": 0,
+		"STONEKNIFE": 0,
+		"STONEHAMMER": 0,
+		"METALPICK": 0,
+		"METALAXE": 0,
+		"METALKNIFE": 0,
+		"FISHINGROD": 0,
+		"WOODENFISHHOOK": 0,
+		"METALFISHHOOK": 0
 	};
