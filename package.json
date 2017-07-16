@@ -10,5 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.15.3"
+  },
+  "devDependencies": {
+    "emojify-webpack-plugin": "^1.0.1"
   }
 }

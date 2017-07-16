@@ -47,72 +47,92 @@ function mineTinOre(){
 //-------------------------------------
 //stonepick
 function craftStonePick(){
-	MiscItems.ROCK -= 2;
-	MiscItems.STICK -= 1;
-	MiscItems.VINE -= 1;
-	Tools.STONEPICK += 1;
+	if(MiscItems.ROCK >= 2 && MiscItems.STICK >= 1 && MiscItems.VINE >= 1){
+		MiscItems.ROCK -= 2;
+		MiscItems.STICK -= 1;
+		MiscItems.VINE -= 1;
+		Tools.STONEPICK += 1;
+	}
 }
 //stoneaxe
 function craftStoneAxe(){
-	MiscItems.ROCK -= 2;
-	MiscItems.STICK -= 1;
-	MiscItems.VINE -= 1;
-	Tools.STONEAXE += 1;
+	if(MiscItems.ROCK >= 2 && MiscItems.STICK >= 1 && MiscItems.VINE >= 1){
+		MiscItems.ROCK -= 2;
+		MiscItems.STICK -= 1;
+		MiscItems.VINE -= 1;
+		Tools.STONEAXE += 1;
+	}
 }
 //stoneknife
 function craftStoneKnife(){
-	MiscItems.ROCK -= 1;
-	MiscItems.STICK -= 1;
-	MiscItems.VINE -= 1;
-	Tools.STONEKNIFE += 1;
+	if(MiscItems.ROCK >= 1 && MiscItems.STICK >= 1 && MiscItems.VINE >= 1){
+		MiscItems.ROCK -= 1;
+		MiscItems.STICK -= 1;
+		MiscItems.VINE -= 1;
+		Tools.STONEKNIFE += 1;
+	}
 }
 //stonehammer
 function craftStoneHammer(){
-	MiscItems.ROCK -= 2;
-	MiscItems.STICK -= 1;
-	MiscItems.VINE -= 1;
-	Tools.STONEHAMMER += 1;
+	if(MiscItems.ROCK >= 2 && MiscItems.STICK >= 1 && MiscItems.VINE >= 1){
+		MiscItems.ROCK -= 2;
+		MiscItems.STICK -= 1;
+		MiscItems.VINE -= 1;
+		Tools.STONEHAMMER += 1;
+	}
 }
 //metalpick
 function craftMetalPick(){
-	CraftedItems.IRONBAR -= 1;
-	MiscItems.STICK -= 1;
-	MiscItems.VINE -= 1;
-	CraftedItems.CHARCOAL -= 3;
-	Tools.METALPICK += 1;
+	if(CraftedItems.IRONBAR >= 1 && MiscItems.STICK >= 1 && MiscItems.VINE >= 1 && CraftedItems.CHARCOAL >= 3){
+		CraftedItems.IRONBAR -= 1;
+		MiscItems.STICK -= 1;
+		MiscItems.VINE -= 1;
+		CraftedItems.CHARCOAL -= 3;
+		Tools.METALPICK += 1;
+	}
 }
 //metalaxe
 function craftMetalAxe(){
-	CraftedItems.IRONBAR -= 1;
-	MiscItems.STICK -= 1;
-	MiscItems.VINE -= 1;
-	CraftedItems.CHARCOAL -= 3;
-	Tools.METALAXE += 1;
+	if(CraftedItems.IRONBAR >= 1 && MiscItems.STICK >= 1 && MiscItems.VINE >= 1 && CraftedItems.CHARCOAL >= 3){
+		CraftedItems.IRONBAR -= 1;
+		MiscItems.STICK -= 1;
+		MiscItems.VINE -= 1;
+		CraftedItems.CHARCOAL -= 3;
+		Tools.METALAXE += 1;
+	}
 }
 //metalknife
 function craftMetalKnife(){
-	CraftedItems.IRONBAR -= 1;
-	MiscItems.STICK -= 1;
-	MiscItems.VINE -= 1;
-	CraftedItems.CHARCOAL -= 3;
-	Tools.METALKNIFE += 1;
+	if(CraftedItems.IRONBAR >= 1 && MiscItems.STICK >= 1 && MiscItems.VINE >= 1 && CraftedItems.CHARCOAL >= 3){
+		CraftedItems.IRONBAR -= 1;
+		MiscItems.STICK -= 1;
+		MiscItems.VINE -= 1;
+		CraftedItems.CHARCOAL -= 3;
+		Tools.METALKNIFE += 1;
+	}
 }
 
 function craftFishingRod(){
-	MiscItems.ROCK -= 2;
-	MiscItems.STICK -= 2;
-	MiscItems.VINE -= 3;
-	Tools.FISHINGROD += 1;
+	if(MiscItems.ROCK >= 2 && MiscItems.STICK >= 2 && MiscItems.VINE >= 3){
+		MiscItems.ROCK -= 2;
+		MiscItems.STICK -= 2;
+		MiscItems.VINE -= 3;
+		Tools.FISHINGROD += 1;
+	}
 }
 
 function craftWoodHook(){
-	CraftedItems.BOARDS -= 1;
-	Tools.WOODENFISHHOOK += 1;
+	if(CraftedItems.BOARDS >= 1){
+		CraftedItems.BOARDS -= 1;
+		Tools.WOODENFISHHOOK += 1;
+	}
 }
 
 function craftMetalHook(){
-	CraftedItems.IRONBAR -= 1;
-	Tools.METALFISHHOOK += 1;
+	if(CraftedItems.IRONBAR >= 1){
+		CraftedItems.IRONBAR -= 1;
+		Tools.METALFISHHOOK += 1;
+	}
 }
 
 
@@ -123,57 +143,79 @@ function craftMetalHook(){
 //-------------------------------------
 //rope
 function craftRope(){
-	MiscItems.VINE -= 3;
-	CraftedItems.ROPE += 1;
+	if(MiscItems.VINE >= 3){
+		MiscItems.VINE -= 3;
+		CraftedItems.ROPE += 1;
+	}
 }
 //boards
 function craftBoards(){
-	MiscItems.LOG -= 1;
-	CraftedItems.BOARDS += 5;
+	if(MiscItems.LOG >= 1){
+		MiscItems.LOG -= 1;
+		CraftedItems.BOARDS += 5;
+	}
 }
 //charcoal
 function craftCharcoal(){
-	MiscItems.STICKS -= 5;
-	CraftedItems.CHARCOAL += 5;
+	if(MiscItems.STICKS >= 5){
+		MiscItems.STICKS -= 5;
+		CraftedItems.CHARCOAL += 5;
+	}
 }
 //ironbar
 function craftIronBar(){
-	MiscItems.IRONORE -= 4;
-	CraftedItems.IRONBAR += 1;
+	if(MiscItems.IRONORE >= 4){
+		MiscItems.IRONORE -= 4;
+		CraftedItems.IRONBAR += 1;
+	}
 }
 //copperbar
 function craftCopperBar(){
-	MiscItems.COPPERORE -= 4;
-	CraftedItems.COPPERBAR += 1;
+	if(MiscItems.COPPERORE >= 4){
+		MiscItems.COPPERORE -= 4;
+		CraftedItems.COPPERBAR += 1;
+	}
 }
 //tinbar
 function craftTinBar(){
-	MiscItems.TINORE -= 4;
-	CraftedItems.TINBAR += 1;
+	if(MiscItems.TINORE >= 4){
+		MiscItems.TINORE -= 4;
+		CraftedItems.TINBAR += 1;
+	}
 }
 //claypot
 function craftClayPot(){
-	MiscItems.CLAY -= 3;
-	CraftedItems.CLAYPOT += 1;
+	if(MiscItems.CLAY >= 3){
+		MiscItems.CLAY -= 3;
+		CraftedItems.CLAYPOT += 1;
+	}
 }
 //clayplate
 function craftClayPlate(){
-	MiscItems.CLAY -= 1;
-	CraftedItems.CLAYPLATE += 1;
+	if(MiscItems.CLAY >= 1){
+		MiscItems.CLAY -= 1;
+		CraftedItems.CLAYPLATE += 1;
+	}
 }
 //claybowl
 function craftClayBowl(){
-	MiscItems.CLAY -= 1;
-	CraftedItems.CLAYBOWL += 1;
+	if(MiscItems.CLAY >= 1){
+		MiscItems.CLAY -= 1;
+		CraftedItems.CLAYBOWL += 1;
+	}
 }
 //vinebasket
 function craftVineBasket(){
-	MiscItems.VINE -= 5;
-	CraftedItems.VINEBASKET += 1;
+	if(MiscItems.VINE >= 5){
+		MiscItems.VINE -= 5;
+		CraftedItems.VINEBASKET += 1;
+	}
 }
 function craftNails(){
-	CraftedItems.IRONBAR -= 1;
-	CraftedItems.NAILS += 5;
+	if(CraftedItems.IRONBAR >= 1){
+		CraftedItems.IRONBAR -= 1;
+		CraftedItems.NAILS += 5;
+	}
 }
 
 //-------------------------------------

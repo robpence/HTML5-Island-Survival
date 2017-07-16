@@ -5,9 +5,10 @@ var game, isClicked, boxArray, score, facing, currX, currY, charX, charY, isMovi
 isClicked = false;
 gamePaused = false;
 isInventoryMenu = false;
-map = 1;
+mapW = 1;
 day = 1;
-time = 8;
+hours = 8;
+minutes = '00';
 var spritenumber = 1;
 var invCounter = 0;
 
@@ -15,6 +16,11 @@ charX = CHAR_START_X;
 charY = CHAR_START_Y;
 
 var menu = 0;
+
+var map;
+var layer;
+var marker;
+var currentTile;
 
 //Move this somewhere else.
 isRock = true;
@@ -35,8 +41,20 @@ Game.prototype = {
 
 	create() {
 		//order matters, first is in back.
-		game.add.tileSprite(0, 0, 1920, 1920, 'ground1');
+		//game.add.tileSprite(0, 0, 1920, 1920, 'ground1');
 		game.world.setBounds(0, 0, 1920, 1920);
+
+
+		map = game.add.tilemap('desert');
+    	map.addTilesetImage('Desert', 'tiles');
+    	currentTile = map.getTile(2, 3);
+
+    	layer = map.createLayer('Ground');
+    	layer.resizeWorld();
+
+    	marker = game.add.graphics();
+    	marker.lineStyle(2, 0x000000, 1);
+    	marker.drawRect(0, 0, 32, 32);
 
 		createPickUps();
 		createBuildings();
@@ -53,7 +71,9 @@ Game.prototype = {
 
 		dayLabel = game.add.text(25, 25, 'Day: 1', {font: "16px Arial", fill: 'black'});
 		timeLabel = game.add.text(95, 25, 'Time: 8:00', {font: "16px Arial", fill: 'black'});
-		game.time.events.loop(Phaser.Timer.SECOND, updateTime, this);
+		dayLabel.fixedToCamera = true;
+		timeLabel.fixedToCamera = true;
+		game.time.events.loop(Phaser.Timer.SECOND * 5, updateTime, this);
 
 		this.stage.disableVisibilityChange = false;
 
@@ -62,9 +82,13 @@ Game.prototype = {
 		messageLabel.visible = false;
 		messageLabel.fixedToCamera = true;
 
+		game.physics.enable( [ mainChar, craftingtable ], Phaser.Physics.ARCADE);
+
 	},
 
 	update() {
+
+		game.physics.arcade.collide(mainChar, craftingtable, collisionHandler, null, this);
 
 		//----------------------------------------
 		//---------- KEYBOARD INPUTS -------------
@@ -190,7 +214,7 @@ Game.prototype = {
 		}
 			
 
-		if(map == 1){
+		if(mapW == 1){
 			drawItems();
 			drawBuildings();
 		}
@@ -203,14 +227,40 @@ Game.prototype = {
 		//game.debug.spriteCoords(mainChar, 32, 500);
 	}
 
+
 };
+
+function collisionHandler (obj1, obj2) {
+
+    //  The two sprites are colliding
+    //game.stage.backgroundColor = '#992d2d';
+    console.log("colliding");
+
+}
+
 function updateTime(){
-	if(time == 12){
-		time = 1;
-		timeLabel.setText('Time: ' + time + ':00');
-	}else{
-		time += 1;
-		timeLabel.setText('Time: ' + time + ':00');
+	if(minutes == "45"){
+		minutes = "00";
+		if(hours == 23){
+			hours = 0;
+			day += 1;
+			timeLabel.setText('Time: ' + hours + ':' + minutes);
+		}else{
+			hours += 1;
+			timeLabel.setText('Time: ' + hours + ':' + minutes);
+		}
+	}
+	else if(minutes == "30"){
+		minutes = "45";
+		timeLabel.setText('Time: ' + hours + ':' + minutes);
+	}
+	else if(minutes == "15"){
+		minutes = "30";
+		timeLabel.setText('Time: ' + hours + ':' + minutes);
+	}
+	else{
+		minutes = "15";
+		timeLabel.setText('Time: ' + hours + ':' + minutes);
 	}
 }
 
