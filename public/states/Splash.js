@@ -12,6 +12,7 @@ Splash.prototype = {
     game.load.script('credits',   'states/Credits.js');
     game.load.script('options',   'states/Options.js');
     game.load.script('instruct',  'states/Instructions.js');
+    game.load.script('textdisplay', 'states/TextDisplayer.js');
   },
 
   loadBgm: function () {
@@ -37,9 +38,12 @@ Splash.prototype = {
     game.load.image('log', "img/log1.png");
     game.load.image('palmleaf', "img/palmleave1.png");
     game.load.image('craftingtable', "img/craftingtable1.png");
+    game.load.image('dialogbackground', "img/dialogbox.png");
 
     game.load.tilemap('desert', 'img/desert.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('tiles', 'img/tmw_island_spacing.png');
+
+    game.load.text('introText', 'txt/introText.txt');
   },
 
   

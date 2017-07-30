@@ -1,6 +1,6 @@
 var Game = function() {};
 
-var game, isClicked, boxArray, score, facing, currX, currY, charX, charY, isMoving, clock, state;
+var game, isClicked, boxArray, score, facing, currX, currY, charX, charY, isMoving, clock, state, introText, dialogbackground;
 
 isClicked = false;
 gamePaused = false;
@@ -11,6 +11,7 @@ hours = 8;
 minutes = '00';
 var spritenumber = 1;
 var invCounter = 0;
+isDisplayText = false;
 
 charX = CHAR_START_X;
 charY = CHAR_START_Y;
@@ -59,7 +60,7 @@ Game.prototype = {
 		createPickUps();
 		createBuildings();
 		
-
+		introText = game.cache.getText('introText');
 		//
 		mainChar = game.add.sprite(100, 200, 'mainCharacter', 7);
 		mainChar.animations.add('walkNorth', [0, 1, 2], 15);
@@ -83,6 +84,18 @@ Game.prototype = {
 		messageLabel.fixedToCamera = true;
 
 		game.physics.enable( [ mainChar, craftingtable ], Phaser.Physics.ARCADE);
+
+		dialogbackground = game.add.sprite(0, 550, 'dialogbackground');
+		dialogbackground.visible = false;
+		dialogbackground.fixedToCamera = true;
+		//dialogbackground.anchor.setTo(0.5, 0.5);
+
+		dialogLabel = game.add.text(400, 590, 'text', { font: '24px', fill: '#fff', stroke: 'black', strokeThickness: 4});
+		dialogLabel.anchor.setTo(0.5, 0.5);
+		dialogLabel.visible = false;
+		dialogLabel.fixedToCamera = true;
+
+		loadTextToDisplay(introText);
 
 	},
 
@@ -114,20 +127,29 @@ Game.prototype = {
 		game.input.keyboard.onUpCallback = function( e ){ 
 			if(e.keyCode == Phaser.Keyboard.LEFT || e.keyCode == Phaser.Keyboard.A){ 
 				//stop left animation
+				//console.log("stop animation called");
 				mainChar.animations.stop('walkWest');               
 	        }
 	        if(e.keyCode == Phaser.Keyboard.RIGHT || e.keyCode == Phaser.Keyboard.D){ 
 				//stop right animation
+				//console.log("stop animation called");
 				mainChar.animations.stop('walkEast');                 
 	        }
 	        if(e.keyCode == Phaser.Keyboard.UP || e.keyCode == Phaser.Keyboard.W){ 
 				//stop up animation
+				//console.log("stop animation called");
 				mainChar.animations.stop('walkNorth');                 
 	        }
 	        if(e.keyCode == Phaser.Keyboard.DOWN || e.keyCode == Phaser.Keyboard.S){ 
 				//stop down animation
+				//console.log("stop animation called");
 				mainChar.animations.stop('walkSouth');                 
 	        }
+	        if(e.keyCode == Phaser.Keyboard.ENTER || e.keyCode == Phaser.Keyboard.SPACEBAR){ 
+				//increase the linenumber by 1 to go to the next dialog line
+				dialogLineNumber += 1;
+				//console.log(dll.getItem(dialogLineNumber));
+			}
 		}
 
 
@@ -219,12 +241,21 @@ Game.prototype = {
 			drawBuildings();
 		}
 
+		//if the game is displaying text, set isDisplaytext to true, and then set textfile to the right textfile...
+		//will need refactoring
+		//if(isDisplayText){
+		displayText();
+		//}
+		//displayText(introText);
+		//console.log(introText);
+
 
 	}, //end update
 
 	render() {
 		//game.debug.cameraInfo(game.camera, 32, 32);
 		//game.debug.spriteCoords(mainChar, 32, 500);
+		//game.debug.geom(textbox,'#0fffff');
 	}
 
 
