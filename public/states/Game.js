@@ -51,6 +51,8 @@ var right = true;
 var stop = false
 var aiCounter = 1000;
 
+var thirstBarPercent = 100;
+
 Game.prototype = {
 	
 	preload() {
@@ -93,11 +95,30 @@ Game.prototype = {
 		game.camera.follow(mainChar);
 
 
-		dayLabel = game.add.text(25, 25, 'Day: 1', {font: "16px Arial", fill: 'black'});
-		timeLabel = game.add.text(95, 25, 'Time: 8:00', {font: "16px Arial", fill: 'black'});
+		dayLabel = game.add.text(635, 10, 'Day: 1', {font: "16px Arial", fill: 'black'});
+		timeLabel = game.add.text(705, 10, 'Time: 8:00', {font: "16px Arial", fill: 'black'});
 		dayLabel.fixedToCamera = true;
 		timeLabel.fixedToCamera = true;
 		game.time.events.loop(Phaser.Timer.SECOND * 5, updateTime, this);
+
+
+		//Various Lifebars
+		var barConfig = {x: 135, y: 20, width: 200, height: 20};
+		var bar2Config = {x: 135, y: 42, width: 200, height: 20};
+		var bar3Config = {x: 135, y: 64, width: 200, height: 20};
+
+		myHealthBar = new HealthBar(game, barConfig);
+		myHealthBar.setFixedToCamera(true);
+		myHealthBar.setBarColor('#f44e42');
+
+		myThirstBar = new HealthBar(game, bar2Config);
+		myThirstBar.setFixedToCamera(true);
+		myThirstBar.setBarColor('#4280f4');
+
+		myHungerBar = new HealthBar(game, bar3Config);
+		myHungerBar.setFixedToCamera(true);
+		myHungerBar.setBarColor('#f4ce42');
+
 
 		this.stage.disableVisibilityChange = false;
 
@@ -301,6 +322,7 @@ function char2Wander(){
 }
 
 function updateTime(){
+
 	if(minutes == "45"){
 		minutes = "00";
 		if(hours == 23){
@@ -309,7 +331,9 @@ function updateTime(){
 			timeLabel.setText('Time: ' + hours + ':' + minutes);
 		}else{
 			hours += 1;
+			thirstBarPercent -= 2.5;
 			timeLabel.setText('Time: ' + hours + ':' + minutes);
+			myThirstBar.setPercent(thirstBarPercent);
 		}
 	}
 	else if(minutes == "30"){

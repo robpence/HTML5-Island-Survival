@@ -14,6 +14,7 @@ Main.prototype = {
     //game.load.image('brand',    'assets/images/logo.png'); Make my own Logo
     game.load.script('polyfill',  'lib/polyfill.js');
     game.load.script('utils',     'lib/utils.js');
+    game.load.script('HealthBar', 'HealthBar.standalone.js');
     game.load.script('splash',    'states/Splash.js');
   },
 
