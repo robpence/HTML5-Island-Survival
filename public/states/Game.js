@@ -1,6 +1,26 @@
 var Game = function() {};
 
-var game, isClicked, boxArray, score, facing, currX, currY, charX, charY, isMoving, clock, state, introText, dialogbackground;
+var game, 
+	isClicked, 
+	boxArray, 
+	score, 
+	facing, 
+	currX, 
+	currY, 
+	charX, 
+	charY, 
+	isMoving, 
+	clock, 
+	state, 
+	introText, 
+	dialogbackground,
+	map,
+	layer,
+	marker,
+	currentTile,
+	mainChar, 
+	char2, 
+	cursors;
 
 isClicked = false;
 gamePaused = false;
@@ -18,11 +38,6 @@ charY = CHAR_START_Y;
 
 var menu = 0;
 
-var map;
-var layer;
-var marker;
-var currentTile;
-
 //Move this somewhere else.
 isRock = true;
 isClay = true;
@@ -31,8 +46,10 @@ isPalmLeaf = true;
 isLog = true;
 isVine  =true;
 
-var mainChar;
-var cursors;
+var left = false;
+var right = true;
+var stop = false
+var aiCounter = 1000;
 
 Game.prototype = {
 	
@@ -53,22 +70,28 @@ Game.prototype = {
     	layer = map.createLayer('Ground');
     	layer.resizeWorld();
 
-    	marker = game.add.graphics();
-    	marker.lineStyle(2, 0x000000, 1);
-    	marker.drawRect(0, 0, 32, 32);
+    	//marker = game.add.graphics();
+    	//marker.lineStyle(2, 0x000000, 1);
+    	//marker.drawRect(0, 0, 32, 32);
 
 		createPickUps();
 		createBuildings();
 		
 		introText = game.cache.getText('introText');
-		//
-		mainChar = game.add.sprite(100, 200, 'mainCharacter', 7);
+		
+		//init main char sprite + animations
+		mainChar = game.add.sprite(400, 400, 'mainCharacter', 7);
 		mainChar.animations.add('walkNorth', [0, 1, 2], 15);
 		mainChar.animations.add('walkEast', [3, 4, 5], 15);
 		mainChar.animations.add('walkSouth', [6, 7, 8], 15);
 		mainChar.animations.add('walkWest', [9, 10, 11], 15);
 		//game.physics.p2.enable(mainChar);
+
+		//init char2 sprite + animations
+		char2 = game.add.sprite(300, 300, 'char2', 7);
+
 		game.camera.follow(mainChar);
+
 
 		dayLabel = game.add.text(25, 25, 'Day: 1', {font: "16px Arial", fill: 'black'});
 		timeLabel = game.add.text(95, 25, 'Time: 8:00', {font: "16px Arial", fill: 'black'});
@@ -106,6 +129,39 @@ Game.prototype = {
 		//----------------------------------------
 		//---------- KEYBOARD INPUTS -------------
 		//----------------------------------------
+		listenForKeyboardInputs();
+			
+
+		char2Wander();
+
+		if(mapW == 1){
+			drawItems();
+			drawBuildings();
+		}
+
+		displayText();
+
+	}, //end update
+
+	render() {
+		//game.debug.cameraInfo(game.camera, 32, 32);
+		//game.debug.spriteCoords(mainChar, 12, 500);
+		game.debug.spriteCoords(char2, 12, 500);
+		//game.debug.geom(textbox,'#0fffff');
+	}
+
+
+};
+
+function collisionHandler (obj1, obj2) {
+
+    //  The two sprites are colliding
+    //game.stage.backgroundColor = '#992d2d';
+    console.log("colliding");
+
+}
+
+function listenForKeyboardInputs(){
 
 		if(game.input.keyboard.isDown(Phaser.Keyboard.LEFT) || game.input.keyboard.isDown(Phaser.Keyboard.A)){
 			mainChar.animations.play('walkWest', 15, true);
@@ -151,29 +207,6 @@ Game.prototype = {
 				//console.log(dll.getItem(dialogLineNumber));
 			}
 		}
-
-
-		//if P or ESC is pressed we pause the game
-		/*
-		window.onkeydown = function(event) {
-			console.log(event.keyCode);
-			if (event.keyCode == 80){       
-				if(game.paused){
-					unpause(game);
-				} else {
-					//display a button to resume the game
-					resumeLabel = game.add.text(400, 550, 'Resume', { font: '24px', fill: '#fff', stroke: 'black', strokeThickness: 4});
-					resumeLabel.anchor.setTo(0.5, 0.5);
-					resumeLabel.inputEnabled = true;
-					resumeLabel.fixedToCamera = true;
-					resumeLabel.events.onInputDown.add(function(){
-						unpause(game);
-					});
-
-					game.paused = true;
-				}
-			}
-		}*/
 
 		if(game.input.keyboard.isDown(Phaser.Keyboard.P) || game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
 			if(game.paused == false){
@@ -234,39 +267,37 @@ Game.prototype = {
 				unpauseInventory(game);
 			}
 		}
-			
+}
 
-		if(mapW == 1){
-			drawItems();
-			drawBuildings();
+function char2Wander(){
+
+	if(stop){
+		//counter = 1000;
+		aiCounter -= 1;
+		if(aiCounter == 0){
+			stop = false;
 		}
-
-		//if the game is displaying text, set isDisplaytext to true, and then set textfile to the right textfile...
-		//will need refactoring
-		//if(isDisplayText){
-		displayText();
-		//}
-		//displayText(introText);
-		//console.log(introText);
-
-
-	}, //end update
-
-	render() {
-		//game.debug.cameraInfo(game.camera, 32, 32);
-		//game.debug.spriteCoords(mainChar, 32, 500);
-		//game.debug.geom(textbox,'#0fffff');
+		
 	}
-
-
-};
-
-function collisionHandler (obj1, obj2) {
-
-    //  The two sprites are colliding
-    //game.stage.backgroundColor = '#992d2d';
-    console.log("colliding");
-
+	//walk left and right, basic ai
+	if(right && !stop){
+		char2.x += 2;
+		if(char2.x >= 700){
+			right = false;
+			left = true;
+			aiCounter = 1000;
+			stop = true;
+		}
+	}
+	if(left && !stop){
+		char2.x -= 2;
+		if(char2.x <= 300){
+			right = true;
+			left = false;
+			aiCounter = 1000;
+			stop = true;
+		}
+	}
 }
 
 function updateTime(){
