@@ -102,6 +102,10 @@ Game.prototype = {
 		game.time.events.loop(Phaser.Timer.SECOND * 5, updateTime, this);
 
 
+		healthbackground = game.add.sprite(0, 0, 'healthbackground');
+		healthbackground.visible = true;
+		healthbackground.fixedToCamera = true;
+
 		//Various Lifebars
 		var barConfig = {x: 135, y: 20, width: 200, height: 20};
 		var bar2Config = {x: 135, y: 42, width: 200, height: 20};

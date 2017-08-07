@@ -40,6 +40,7 @@ Splash.prototype = {
     game.load.image('palmleaf', "img/palmleave1.png");
     game.load.image('craftingtable', "img/craftingtable1.png");
     game.load.image('dialogbackground', "img/dialogbox.png");
+    game.load.image('healthbackground', "img/healthbox.png");
 
     game.load.tilemap('desert', 'img/desert.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('tiles', 'img/tmw_island_spacing.png');
