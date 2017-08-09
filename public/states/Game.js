@@ -32,6 +32,7 @@ minutes = '00';
 var spritenumber = 1;
 var invCounter = 0;
 isDisplayText = false;
+displayBuilder = false;
 
 charX = CHAR_START_X;
 charY = CHAR_START_Y;
@@ -72,9 +73,9 @@ Game.prototype = {
     	layer = map.createLayer('Ground');
     	layer.resizeWorld();
 
-    	//marker = game.add.graphics();
-    	//marker.lineStyle(2, 0x000000, 1);
-    	//marker.drawRect(0, 0, 32, 32);
+    	marker = game.add.graphics();
+    	marker.lineStyle(2, 0x000000, 1);
+    	marker.drawRect(0, 0, 32, 32);
 
 		createPickUps();
 		createBuildings();
@@ -95,16 +96,15 @@ Game.prototype = {
 		game.camera.follow(mainChar);
 
 
+		healthbackground = game.add.sprite(0, 0, 'healthbackground');
+		healthbackground.visible = true;
+		healthbackground.fixedToCamera = true;
+
 		dayLabel = game.add.text(635, 10, 'Day: 1', {font: "16px Arial", fill: 'black'});
 		timeLabel = game.add.text(705, 10, 'Time: 8:00', {font: "16px Arial", fill: 'black'});
 		dayLabel.fixedToCamera = true;
 		timeLabel.fixedToCamera = true;
 		game.time.events.loop(Phaser.Timer.SECOND * 5, updateTime, this);
-
-
-		healthbackground = game.add.sprite(0, 0, 'healthbackground');
-		healthbackground.visible = true;
-		healthbackground.fixedToCamera = true;
 
 		//Various Lifebars
 		var barConfig = {x: 135, y: 20, width: 200, height: 20};
@@ -151,6 +151,16 @@ Game.prototype = {
 
 		game.physics.arcade.collide(mainChar, craftingtable, collisionHandler, null, this);
 
+		//marker.x = layer.getTileX(game.input.activePointer.worldX) * 32;
+    	//marker.y = layer.getTileY(game.input.activePointer.worldY) * 32;
+    	if(displayBuilder){
+    		marker.x = layer.getTileX(mainChar.x) * 32;
+    		marker.y = layer.getTileY(mainChar.y) * 32;
+    	}else{
+    		marker.x = -32;
+    		marker.y = -32;
+    	}
+
 		//----------------------------------------
 		//---------- KEYBOARD INPUTS -------------
 		//----------------------------------------
@@ -164,14 +174,14 @@ Game.prototype = {
 			drawBuildings();
 		}
 
-		displayText();
+		//displayText();
 
 	}, //end update
 
 	render() {
 		//game.debug.cameraInfo(game.camera, 32, 32);
 		//game.debug.spriteCoords(mainChar, 12, 500);
-		game.debug.spriteCoords(char2, 12, 500);
+		//game.debug.spriteCoords(char2, 12, 500);
 		//game.debug.geom(textbox,'#0fffff');
 	}
 
