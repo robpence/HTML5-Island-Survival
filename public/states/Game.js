@@ -32,7 +32,8 @@ minutes = '00';
 var spritenumber = 1;
 var invCounter = 0;
 isDisplayText = false;
-displayBuilder = false;
+displayBuilder = true;
+facing = 's';
 
 charX = CHAR_START_X;
 charY = CHAR_START_Y;
@@ -151,11 +152,31 @@ Game.prototype = {
 
 		game.physics.arcade.collide(mainChar, craftingtable, collisionHandler, null, this);
 
-		//marker.x = layer.getTileX(game.input.activePointer.worldX) * 32;
-    	//marker.y = layer.getTileY(game.input.activePointer.worldY) * 32;
     	if(displayBuilder){
     		marker.x = layer.getTileX(mainChar.x) * 32;
     		marker.y = layer.getTileY(mainChar.y) * 32;
+    		if(facing == 'n'){
+    			//console.log('facing north');
+    			marker.x = layer.getTileX(mainChar.x + 12) * 32;
+    			marker.y = layer.getTileY(mainChar.y - 16) * 32;
+    		}
+    		if(facing == 'e'){
+    			//console.log('facing east');
+    			marker.x = layer.getTileX(mainChar.x + 32) * 32;
+    			marker.y = layer.getTileY(mainChar.y + 16) * 32;
+    		}
+    		if(facing == 's'){
+    			//console.log('facing south');
+    			marker.x = layer.getTileX(mainChar.x + 12) * 32;
+    			marker.y = layer.getTileY(mainChar.y + 48) * 32;
+    		}
+    		if(facing == 'w'){
+    			//console.log('facing west');
+    			marker.x = layer.getTileX(mainChar.x - 32) * 32;
+    			marker.y = layer.getTileY(mainChar.y + 16) * 32;
+    		}
+    		//marker.x = layer.getTileX(mainChar.x) * 32;
+    		//marker.y = layer.getTileY(mainChar.y) * 32;
     	}else{
     		marker.x = -32;
     		marker.y = -32;
@@ -199,19 +220,23 @@ function collisionHandler (obj1, obj2) {
 function listenForKeyboardInputs(){
 
 		if(game.input.keyboard.isDown(Phaser.Keyboard.LEFT) || game.input.keyboard.isDown(Phaser.Keyboard.A)){
+			facing = 'w';
 			mainChar.animations.play('walkWest', 15, true);
 			mainChar.x -= 4;
 		}
 		else if(game.input.keyboard.isDown(Phaser.Keyboard.RIGHT) || game.input.keyboard.isDown(Phaser.Keyboard.D)){
+			facing = 'e';
 			mainChar.animations.play('walkEast', 15, true);
 			mainChar.x += 4;
 		}
 
 		if(game.input.keyboard.isDown(Phaser.Keyboard.UP) || game.input.keyboard.isDown(Phaser.Keyboard.W)){
+			facing = 'n';
 			mainChar.animations.play('walkNorth', 15, true);
 			mainChar.y -= 4;
 		}
 		else if(game.input.keyboard.isDown(Phaser.Keyboard.DOWN) || game.input.keyboard.isDown(Phaser.Keyboard.S)){
+			facing = 's';
 			mainChar.animations.play('walkSouth', 15, true);
 			mainChar.y += 4;
 		}
@@ -219,21 +244,25 @@ function listenForKeyboardInputs(){
 			if(e.keyCode == Phaser.Keyboard.LEFT || e.keyCode == Phaser.Keyboard.A){ 
 				//stop left animation
 				//console.log("stop animation called");
+				facing = 'w';
 				mainChar.animations.stop('walkWest');               
 	        }
 	        if(e.keyCode == Phaser.Keyboard.RIGHT || e.keyCode == Phaser.Keyboard.D){ 
 				//stop right animation
 				//console.log("stop animation called");
+				facing = 'e';
 				mainChar.animations.stop('walkEast');                 
 	        }
 	        if(e.keyCode == Phaser.Keyboard.UP || e.keyCode == Phaser.Keyboard.W){ 
 				//stop up animation
 				//console.log("stop animation called");
+				facing = 'n';
 				mainChar.animations.stop('walkNorth');                 
 	        }
 	        if(e.keyCode == Phaser.Keyboard.DOWN || e.keyCode == Phaser.Keyboard.S){ 
 				//stop down animation
 				//console.log("stop animation called");
+				facing = 's';
 				mainChar.animations.stop('walkSouth');                 
 	        }
 	        if(e.keyCode == Phaser.Keyboard.ENTER || e.keyCode == Phaser.Keyboard.SPACEBAR){ 
