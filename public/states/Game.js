@@ -68,7 +68,7 @@ Game.prototype = {
 
 		map = game.add.tilemap('desert');
     	map.addTilesetImage('Desert', 'tiles');
-    	currentTile = map.getTile(2, 3);
+    	currentTile = map.getTile(1, 1);
 
     	layer = map.createLayer('Ground');
     	layer.resizeWorld();
@@ -240,6 +240,9 @@ function listenForKeyboardInputs(){
 				//increase the linenumber by 1 to go to the next dialog line
 				dialogLineNumber += 1;
 				//console.log(dll.getItem(dialogLineNumber));
+			}
+			if(e.keyCode == Phaser.Keyboard.Y){
+				map.putTile(currentTile, layer.getTileX(marker.x), layer.getTileY(marker.y));
 			}
 		}
 
