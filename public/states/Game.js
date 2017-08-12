@@ -72,11 +72,18 @@ Game.prototype = {
     	currentTile = map.getTile(1, 1);
 
     	layer = map.createLayer('Ground');
+    	//collideLayer = map.createLayer('Collisions');
+
+    	map.setCollision(67);
+    	//map.setCollision(67, true, 'Collisions');
     	layer.resizeWorld();
 
     	marker = game.add.graphics();
     	marker.lineStyle(2, 0x000000, 1);
     	marker.drawRect(0, 0, 32, 32);
+
+    	map.setTileIndexCallback(32, hitRock, this);
+    	map.setCollisionBetween(9, 32);
 
 		createPickUps();
 		createBuildings();
@@ -90,6 +97,7 @@ Game.prototype = {
 		mainChar.animations.add('walkSouth', [6, 7, 8], 15);
 		mainChar.animations.add('walkWest', [9, 10, 11], 15);
 		//game.physics.p2.enable(mainChar);
+		//game.physics.enable(mainChar, Phaser.Physics.ARCADE);
 
 		//init char2 sprite + animations
 		char2 = game.add.sprite(300, 300, 'char2', 7);
@@ -149,7 +157,7 @@ Game.prototype = {
 	},
 
 	update() {
-
+		//game.physics.arcade.collide(mainChar, collideLayer);
 		game.physics.arcade.collide(mainChar, craftingtable, collisionHandler, null, this);
 
     	if(displayBuilder){
@@ -204,6 +212,16 @@ Game.prototype = {
 		//game.debug.spriteCoords(mainChar, 12, 500);
 		//game.debug.spriteCoords(char2, 12, 500);
 		//game.debug.geom(textbox,'#0fffff');
+	},
+
+	hitRock(sprite, tile){
+		console.log("hit rock");
+
+    	tile.alpha = 0.2;
+
+    	layer.dirty = true;
+
+    	return false;
 	}
 
 
@@ -215,6 +233,16 @@ function collisionHandler (obj1, obj2) {
     //game.stage.backgroundColor = '#992d2d';
     console.log("colliding");
 
+}
+
+function hitRock(sprite, tile){
+	console.log("hit rock");
+
+    tile.alpha = 0.2;
+
+    layer.dirty = true;
+
+    return false;
 }
 
 function listenForKeyboardInputs(){
@@ -271,7 +299,15 @@ function listenForKeyboardInputs(){
 				//console.log(dll.getItem(dialogLineNumber));
 			}
 			if(e.keyCode == Phaser.Keyboard.Y){
-				map.putTile(currentTile, layer.getTileX(marker.x), layer.getTileY(marker.y));
+				//check if you can build on this tile
+				currentTile = map.getTile(layer.getTileX(marker.x), layer.getTileY(marker.y));
+				console.log(currentTile);
+				//map.putTile(currentTile, layer.getTileX(marker.x), layer.getTileY(marker.y));
+				if(currentTile.index == 66){
+					map.putTile(55, layer.getTileX(marker.x), layer.getTileY(marker.y));
+				}else{
+					console.log("can't build here");
+				}
 			}
 		}
 

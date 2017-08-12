@@ -42,8 +42,10 @@ Splash.prototype = {
     game.load.image('dialogbackground', "img/dialogbox.png");
     game.load.image('healthbackground', "img/healthbox.png");
 
-    game.load.tilemap('desert', 'img/desert.json', null, Phaser.Tilemap.TILED_JSON);
-    game.load.image('tiles', 'img/tmw_island_spacing.png');
+    //game.load.tilemap('desert', 'img/desert.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.tilemap('desert', 'img/island_Game_Map.json', null, Phaser.Tilemap.TILED_JSON);
+    //game.load.image('tiles', 'img/tmw_island_spacing.png');
+    game.load.image('tiles', 'img/island_Game_Tiles.png');
 
     game.load.text('introText', 'txt/introText.txt');
   },
