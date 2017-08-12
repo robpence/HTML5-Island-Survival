@@ -65,25 +65,27 @@ Game.prototype = {
 		//order matters, first is in back.
 		//game.add.tileSprite(0, 0, 1920, 1920, 'ground1');
 		game.world.setBounds(0, 0, 1920, 1920);
-
-
-		map = game.add.tilemap('desert');
+		map = game.add.tilemap('island');
+		map.addTilesetImage('Collide', 'metaTiles');
     	map.addTilesetImage('Desert', 'tiles');
-    	currentTile = map.getTile(1, 1);
+    	//currentTile = map.getTile(1, 1);
 
+    	collideLayer = map.createLayer('Collisions');
     	layer = map.createLayer('Ground');
-    	//collideLayer = map.createLayer('Collisions');
+    	//layer = map.createLayer('Ground');
 
     	map.setCollision(67);
-    	//map.setCollision(67, true, 'Collisions');
+    	//map.setCollisionBetween(41);
+    	map.setCollision(67, true, 'Collisions');
+    	//map.setCollision(41, true, 'Collisions');
     	layer.resizeWorld();
 
     	marker = game.add.graphics();
     	marker.lineStyle(2, 0x000000, 1);
     	marker.drawRect(0, 0, 32, 32);
 
-    	map.setTileIndexCallback(32, hitRock, this);
-    	map.setCollisionBetween(9, 32);
+    	//map.setTileIndexCallback(32, hitRock, this);
+    	//map.setCollisionBetween(9, 32);
 
 		createPickUps();
 		createBuildings();
@@ -102,6 +104,7 @@ Game.prototype = {
 		//init char2 sprite + animations
 		char2 = game.add.sprite(300, 300, 'char2', 7);
 
+		game.physics.enable(mainChar);
 		game.camera.follow(mainChar);
 
 
@@ -157,8 +160,11 @@ Game.prototype = {
 	},
 
 	update() {
-		//game.physics.arcade.collide(mainChar, collideLayer);
+		game.physics.arcade.collide(mainChar, collideLayer);
+		//game.physics.arcade.collide(mainChar, layer);
 		game.physics.arcade.collide(mainChar, craftingtable, collisionHandler, null, this);
+
+		mainChar.body.velocity.set(0);
 
     	if(displayBuilder){
     		marker.x = layer.getTileX(mainChar.x) * 32;
@@ -250,23 +256,23 @@ function listenForKeyboardInputs(){
 		if(game.input.keyboard.isDown(Phaser.Keyboard.LEFT) || game.input.keyboard.isDown(Phaser.Keyboard.A)){
 			facing = 'w';
 			mainChar.animations.play('walkWest', 15, true);
-			mainChar.x -= 4;
+			mainChar.body.velocity.x = -150;
 		}
 		else if(game.input.keyboard.isDown(Phaser.Keyboard.RIGHT) || game.input.keyboard.isDown(Phaser.Keyboard.D)){
 			facing = 'e';
 			mainChar.animations.play('walkEast', 15, true);
-			mainChar.x += 4;
+			mainChar.body.velocity.x = 150;
 		}
 
 		if(game.input.keyboard.isDown(Phaser.Keyboard.UP) || game.input.keyboard.isDown(Phaser.Keyboard.W)){
 			facing = 'n';
 			mainChar.animations.play('walkNorth', 15, true);
-			mainChar.y -= 4;
+			mainChar.body.velocity.y = -150;
 		}
 		else if(game.input.keyboard.isDown(Phaser.Keyboard.DOWN) || game.input.keyboard.isDown(Phaser.Keyboard.S)){
 			facing = 's';
 			mainChar.animations.play('walkSouth', 15, true);
-			mainChar.y += 4;
+			mainChar.body.velocity.y = 150;
 		}
 		game.input.keyboard.onUpCallback = function( e ){ 
 			if(e.keyCode == Phaser.Keyboard.LEFT || e.keyCode == Phaser.Keyboard.A){ 
