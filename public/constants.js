@@ -106,3 +106,8 @@ var HEALTH = 100;
 		"WOODENFISHHOOK": 0,
 		"METALFISHHOOK": 0
 	};
+
+	var FoodItems = {
+		"GUAVA": 0,
+		"PASSIONFRUIT": 0
+	};

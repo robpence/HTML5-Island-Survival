@@ -32,7 +32,7 @@ minutes = '00';
 var spritenumber = 1;
 var invCounter = 0;
 isDisplayText = false;
-displayBuilder = true;
+displayBuilder = false;
 facing = 's';
 
 charX = CHAR_START_X;
@@ -63,21 +63,19 @@ Game.prototype = {
 
 	create() {
 		//order matters, first is in back.
-		//game.add.tileSprite(0, 0, 1920, 1920, 'ground1');
 		game.world.setBounds(0, 0, 1920, 1920);
 		map = game.add.tilemap('island');
 		map.addTilesetImage('Collide', 'metaTiles');
     	map.addTilesetImage('Desert', 'tiles');
-    	//currentTile = map.getTile(1, 1);
 
     	collideLayer = map.createLayer('Collisions');
     	layer = map.createLayer('Ground');
-    	//layer = map.createLayer('Ground');
 
-    	map.setCollision(67);
-    	//map.setCollisionBetween(41);
-    	map.setCollision(67, true, 'Collisions');
-    	//map.setCollision(41, true, 'Collisions');
+    	map.setCollision(73);
+    	//map.setCollisionBetween(48);
+    	map.setCollision(48);
+    	map.setCollision(72);
+    	map.setCollision(73, true, 'Collisions');
     	layer.resizeWorld();
 
     	marker = game.add.graphics();
@@ -98,8 +96,6 @@ Game.prototype = {
 		mainChar.animations.add('walkEast', [3, 4, 5], 15);
 		mainChar.animations.add('walkSouth', [6, 7, 8], 15);
 		mainChar.animations.add('walkWest', [9, 10, 11], 15);
-		//game.physics.p2.enable(mainChar);
-		//game.physics.enable(mainChar, Phaser.Physics.ARCADE);
 
 		//init char2 sprite + animations
 		char2 = game.add.sprite(300, 300, 'char2', 7);
@@ -107,18 +103,19 @@ Game.prototype = {
 		game.physics.enable(mainChar);
 		game.camera.follow(mainChar);
 
-
+		/********** TOP HUD ***********************/
 		healthbackground = game.add.sprite(0, 0, 'healthbackground');
 		healthbackground.visible = true;
 		healthbackground.fixedToCamera = true;
 
+		//time stuff
 		dayLabel = game.add.text(635, 10, 'Day: 1', {font: "16px Arial", fill: 'black'});
 		timeLabel = game.add.text(705, 10, 'Time: 8:00', {font: "16px Arial", fill: 'black'});
 		dayLabel.fixedToCamera = true;
 		timeLabel.fixedToCamera = true;
 		game.time.events.loop(Phaser.Timer.SECOND * 5, updateTime, this);
 
-		//Various Lifebars
+		//various bars
 		var barConfig = {x: 135, y: 20, width: 200, height: 20};
 		var bar2Config = {x: 135, y: 42, width: 200, height: 20};
 		var bar3Config = {x: 135, y: 64, width: 200, height: 20};
@@ -134,6 +131,7 @@ Game.prototype = {
 		myHungerBar = new HealthBar(game, bar3Config);
 		myHungerBar.setFixedToCamera(true);
 		myHungerBar.setBarColor('#f4ce42');
+		/********** END TOP HUD ***********************/
 
 
 		this.stage.disableVisibilityChange = false;
@@ -161,7 +159,7 @@ Game.prototype = {
 
 	update() {
 		game.physics.arcade.collide(mainChar, collideLayer);
-		//game.physics.arcade.collide(mainChar, layer);
+		game.physics.arcade.collide(mainChar, layer);
 		game.physics.arcade.collide(mainChar, craftingtable, collisionHandler, null, this);
 
 		mainChar.body.velocity.set(0);
@@ -305,15 +303,29 @@ function listenForKeyboardInputs(){
 				//console.log(dll.getItem(dialogLineNumber));
 			}
 			if(e.keyCode == Phaser.Keyboard.Y){
+				displayBuilder = !displayBuilder;
+			}
+			if(e.keyCode == Phaser.Keyboard.E && displayBuilder == true){
 				//check if you can build on this tile
 				currentTile = map.getTile(layer.getTileX(marker.x), layer.getTileY(marker.y));
 				console.log(currentTile);
-				//map.putTile(currentTile, layer.getTileX(marker.x), layer.getTileY(marker.y));
-				if(currentTile.index == 66){
-					map.putTile(55, layer.getTileX(marker.x), layer.getTileY(marker.y));
+				
+				//if the land is farmable dirt
+				if(currentTile.index == 71){
+					map.putTile(59, layer.getTileX(marker.x), layer.getTileY(marker.y));
 				}else{
 					console.log("can't build here");
 				}
+
+				//if tile is a crop that can be harvested
+				if(currentTile.index == 72){
+					//reset it to dirt
+					//increase crop count by a number
+					FoodItems.GUAVA += 4;
+					flashMessage("You picked 4 guava fruits!");
+					map.putTile(71, layer.getTileX(marker.x), layer.getTileY(marker.y));
+				}
+
 			}
 		}
 
@@ -417,6 +429,10 @@ function updateTime(){
 			hours = 0;
 			day += 1;
 			timeLabel.setText('Time: ' + hours + ':' + minutes);
+
+			//probably move this function somewhere else but for now it can be when the day changes
+			updateCropGrowth();
+
 		}else{
 			hours += 1;
 			thirstBarPercent -= 2.5;
@@ -505,6 +521,30 @@ function createPickUps(){
 
 function createBuildings(){
 	craftingtable = game.add.sprite(160, 255, 'craftingtable');
+}
+
+function updateCropGrowth(){
+	//loop through all tiles on the map
+	//if the are 59 change them to 60
+	//if the are 60 change them to 48
+	//if they are 48 change them to 72
+	for(var y = 0; y < map.height; ++y){
+		for(var x = 0; x < map.width; ++x){      
+			
+			var tile = map.getTile(x, y);
+			//console.log(tile);
+			if(tile.index == 59){
+				map.putTile(60, x, y);
+			}else if(tile.index == 60){
+				map.putTile(48, x, y);
+			}else if(tile.index == 48){
+				map.putTile(72, x, y);
+			}
+
+		}
+	}
+
+	console.log("Crops Grew");
 }
 
 function drawItems(){
