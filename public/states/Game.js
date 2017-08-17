@@ -54,6 +54,7 @@ var stop = false
 var aiCounter = 1000;
 
 var thirstBarPercent = 100;
+var miningBarPercent = 100;
 
 Game.prototype = {
 	
@@ -155,6 +156,11 @@ Game.prototype = {
 
 		loadTextToDisplay(introText);
 
+		//Bar for mining
+		var miningBarConfig = {x: 200, y: 200, width: 32, height: 8}
+		miningBar = new HealthBar(game, miningBarConfig);
+		miningBar.setBarColor('#f44e42');
+
 	},
 
 	update() {
@@ -163,6 +169,7 @@ Game.prototype = {
 		game.physics.arcade.collide(mainChar, craftingtable, collisionHandler, null, this);
 
 		mainChar.body.velocity.set(0);
+		craftingtable.body.velocity.set(0);
 
     	if(displayBuilder){
     		marker.x = layer.getTileX(mainChar.x) * 32;
@@ -326,7 +333,40 @@ function listenForKeyboardInputs(){
 					map.putTile(71, layer.getTileX(marker.x), layer.getTileY(marker.y));
 				}
 
+				//TODO add a system that tells the user a message based on what tile is infront of them
+				// such as "This is the ocean" if they hit e while standing infront of the ocean, while not in biuld mode
+
 			}
+			//if Q is up before mining is done then reset mining
+			if(e.keyCode == Phaser.Keyboard.Q){
+				miningBarPercent = 100;
+				 miningBar.setPosition(-100, -100);
+			}
+		}
+		//Mining Rocks
+		if(game.input.keyboard.isDown(Phaser.Keyboard.Q) && displayBuilder == true){
+			currentTile = map.getTile(layer.getTileX(marker.x), layer.getTileY(marker.y));
+
+			if(currentTile.index == 44){
+				miningBar.setPosition(currentTile.worldX + 16, currentTile.worldY - 10);
+
+				if (game.input.keyboard.downDuration(Phaser.Keyboard.Q, 1800)){	//add position check
+					miningBarPercent -= 1;
+					miningBar.setPercent(miningBarPercent);
+					console.log("Space was pressed 1800 ms ago? YES");
+
+
+					if(miningBarPercent == 0){
+						console.log("mining should be done");
+						//make player gain some rocks
+						miningBar.setPosition(-100, -100);
+						map.putTile(42, layer.getTileX(marker.x), layer.getTileY(marker.y));
+						miningBarPercent = 100;
+					}
+
+				}
+			};
+
 		}
 
 		if(game.input.keyboard.isDown(Phaser.Keyboard.P) || game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
