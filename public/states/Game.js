@@ -73,9 +73,11 @@ Game.prototype = {
     	layer = map.createLayer('Ground');
 
     	map.setCollision(73);
-    	//map.setCollisionBetween(48);
-    	map.setCollision(48);
-    	map.setCollision(72);
+    	map.setCollision(44); //rock
+    	map.setCollisionBetween(54, 58); //plants and ocean
+    	map.setCollisionBetween(69, 70); //ocean rocks
+    	map.setCollision(48); //crops
+    	map.setCollision(72); //crops
     	map.setCollision(73, true, 'Collisions');
     	layer.resizeWorld();
 
@@ -164,7 +166,7 @@ Game.prototype = {
 	},
 
 	update() {
-		game.physics.arcade.collide(mainChar, collideLayer);
+		//game.physics.arcade.collide(mainChar, collideLayer);
 		game.physics.arcade.collide(mainChar, layer);
 		game.physics.arcade.collide(mainChar, craftingtable, collisionHandler, null, this);
 
@@ -340,33 +342,33 @@ function listenForKeyboardInputs(){
 			//if Q is up before mining is done then reset mining
 			if(e.keyCode == Phaser.Keyboard.Q){
 				miningBarPercent = 100;
-				 miningBar.setPosition(-100, -100);
+				miningBar.setPercent(miningBarPercent);
+				miningBar.setPosition(-100, -100);
 			}
 		}
-		//Mining Rocks
+		/* -------------------- MINING SYSTEM ----------------------- */
 		if(game.input.keyboard.isDown(Phaser.Keyboard.Q) && displayBuilder == true){
 			currentTile = map.getTile(layer.getTileX(marker.x), layer.getTileY(marker.y));
 
 			if(currentTile.index == 44){
 				miningBar.setPosition(currentTile.worldX + 16, currentTile.worldY - 10);
 
-				if (game.input.keyboard.downDuration(Phaser.Keyboard.Q, 1800)){	//add position check
+				if (game.input.keyboard.downDuration(Phaser.Keyboard.Q, 1700)){	//add position check
 					miningBarPercent -= 1;
 					miningBar.setPercent(miningBarPercent);
-					console.log("Space was pressed 1800 ms ago? YES");
 
-
-					if(miningBarPercent == 0){
+					if(miningBarPercent <= 0){
 						console.log("mining should be done");
-						//make player gain some rocks
 						miningBar.setPosition(-100, -100);
-						map.putTile(42, layer.getTileX(marker.x), layer.getTileY(marker.y));
 						miningBarPercent = 100;
+						miningBar.setPercent(miningBarPercent);
+						MiscItems.ROCK += 5;
+						flashMessage("+5 Rocks");
+						map.putTile(42, layer.getTileX(marker.x), layer.getTileY(marker.y));
 					}
 
 				}
 			};
-
 		}
 
 		if(game.input.keyboard.isDown(Phaser.Keyboard.P) || game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
