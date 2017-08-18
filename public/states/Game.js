@@ -55,6 +55,7 @@ var aiCounter = 1000;
 
 var thirstBarPercent = 100;
 var miningBarPercent = 100;
+var plantCuttingBarPercent = 100;
 
 Game.prototype = {
 	
@@ -159,10 +160,13 @@ Game.prototype = {
 		loadTextToDisplay(introText);
 
 		//Bar for mining
-		var miningBarConfig = {x: 200, y: 200, width: 32, height: 8}
+		var miningBarConfig = {x: -100, y: -100, width: 32, height: 8}
 		miningBar = new HealthBar(game, miningBarConfig);
 		miningBar.setBarColor('#f44e42');
 
+		var plantCuttingBarConfig = {x: -100, y: -100, width: 32, height: 8}
+		plantCuttingBar = new HealthBar(game, plantCuttingBarConfig);
+		plantCuttingBar.setBarColor('#6DC066');
 	},
 
 	update() {
@@ -344,6 +348,10 @@ function listenForKeyboardInputs(){
 				miningBarPercent = 100;
 				miningBar.setPercent(miningBarPercent);
 				miningBar.setPosition(-100, -100);
+
+				plantCuttingBarPercent = 100;
+				plantCuttingBar.setPercent(plantCuttingBarPercent);
+				plantCuttingBar.setPosition(-100, -100);
 			}
 		}
 		/* -------------------- MINING SYSTEM ----------------------- */
@@ -353,12 +361,12 @@ function listenForKeyboardInputs(){
 			if(currentTile.index == 44){
 				miningBar.setPosition(currentTile.worldX + 16, currentTile.worldY - 10);
 
-				if (game.input.keyboard.downDuration(Phaser.Keyboard.Q, 1700)){	//add position check
+				if (game.input.keyboard.downDuration(Phaser.Keyboard.Q, 1800)){	//add position check
 					miningBarPercent -= 1;
 					miningBar.setPercent(miningBarPercent);
 
 					if(miningBarPercent <= 0){
-						console.log("mining should be done");
+						//console.log("mining should be done");
 						miningBar.setPosition(-100, -100);
 						miningBarPercent = 100;
 						miningBar.setPercent(miningBarPercent);
@@ -368,7 +376,40 @@ function listenForKeyboardInputs(){
 					}
 
 				}
-			};
+			}
+
+			if(currentTile.index == 54 || currentTile.index == 55 || currentTile.index == 56){
+				plantCuttingBar.setPosition(currentTile.worldX + 16, currentTile.worldY - 10);
+
+				if (game.input.keyboard.downDuration(Phaser.Keyboard.Q, 1800)){	//add position check
+					plantCuttingBarPercent -= 1;
+					plantCuttingBar.setPercent(plantCuttingBarPercent);
+
+					if(plantCuttingBarPercent <= 0){
+						console.log("cutting should be done");
+						plantCuttingBar.setPosition(-100, -100);
+						plantCuttingBarPercent = 100;
+						plantCuttingBar.setPercent(plantCuttingBarPercent);
+						if(currentTile.index == 54){
+							MiscItems.STICK += 2;
+							MiscItems.VINE += 1;
+							flashMessage("+2 Sticks, +1 Vine");
+						}
+						if(currentTile.index == 55){
+							MiscItems.STICK += 3;
+							MiscItems.VINE += 2;
+							flashMessage("+3 Sticks, +2 Vine");
+						}
+						if(currentTile.index == 56){
+							MiscItems.STICK += 4;
+							flashMessage("+4 Sticks");
+						}
+						map.putTile(42, layer.getTileX(marker.x), layer.getTileY(marker.y));
+					}
+
+				}
+			}
+
 		}
 
 		if(game.input.keyboard.isDown(Phaser.Keyboard.P) || game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
