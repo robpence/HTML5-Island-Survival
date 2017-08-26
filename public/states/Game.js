@@ -20,7 +20,20 @@ var game,
 	currentTile,
 	mainChar, 
 	char2, 
-	cursors;
+	cursors,
+	spritenumber,
+	invCounter,
+	invCounter2,
+	invCounter3,
+	invCounter4,
+	menu,
+	left,
+	right,
+	stop,
+	aiCounter,
+	thirstBarPercent,
+	miningBarPercent,
+	plantCuttingBarPercent;
 
 isClicked = false;
 gamePaused = false;
@@ -29,16 +42,17 @@ mapW = 1;
 day = 1;
 hours = 8;
 minutes = '00';
-var spritenumber = 1;
-var invCounter = 0;
+spritenumber = 1;
+invCounter = 0;
+invCounter2 = 0;
+invCounter3 = 0;
+invCounter4 = 0;
 isDisplayText = false;
 displayBuilder = false;
 facing = 's';
-
 charX = CHAR_START_X;
 charY = CHAR_START_Y;
-
-var menu = 0;
+menu = 0;
 
 //Move this somewhere else.
 isRock = true;
@@ -48,14 +62,16 @@ isPalmLeaf = true;
 isLog = true;
 isVine  =true;
 
-var left = false;
-var right = true;
-var stop = false
-var aiCounter = 1000;
+//npc ai, needs work
+left = false;
+right = true;
+stop = false
+aiCounter = 1000;
 
-var thirstBarPercent = 100;
-var miningBarPercent = 100;
-var plantCuttingBarPercent = 100;
+//bars
+thirstBarPercent = 100;
+miningBarPercent = 100;
+plantCuttingBarPercent = 100;
 
 Game.prototype = {
 	
@@ -216,7 +232,7 @@ Game.prototype = {
 		char2Wander();
 
 		if(mapW == 1){
-			drawItems();
+			//drawItems();
 			drawBuildings();
 		}
 
@@ -441,7 +457,7 @@ function listenForKeyboardInputs(){
 
 				//drawInventory();
 
-				var object = MiscItems
+				var object = MiscItems;
 				invCounter = 0;
 				for(var key in object) {
 					console.log(key);
@@ -456,6 +472,63 @@ function listenForKeyboardInputs(){
 	        			window['itemNumber' + invCounter].fixedToCamera = true;
 	    			}
 
+	    			invCounter++;
+				}
+
+				object = CraftedItems;
+				invCounter2 = 0; 
+				for(var key2 in object) {
+					console.log(key2);
+					var invtext = key2 + " :"
+					window['itemLabel' + invCounter] = game.add.text(420, 100 + invCounter2 * 30, invtext, { font: '16px', fill: 'black'});
+					window['itemLabel' + invCounter].fixedToCamera = true;
+
+	    			if(object.hasOwnProperty(key2)) {
+	        			var property = object[key2];
+	        			console.log(property);
+	        			window['itemNumber' + invCounter] = game.add.text(540, 100 + invCounter2 * 30, property, { font: '16px', fill: 'black'});
+	        			window['itemNumber' + invCounter].fixedToCamera = true;
+	    			}
+
+	    			invCounter2++;
+	    			invCounter++;
+				}
+
+				object = Tools;
+				invCounter3 = 0; 
+				for(var key3 in object) {
+					console.log(key3);
+					var invtext = key3 + " :"
+					window['itemLabel' + invCounter] = game.add.text(220, 100 + invCounter3 * 30, invtext, { font: '16px', fill: 'black'});
+					window['itemLabel' + invCounter].fixedToCamera = true;
+
+	    			if(object.hasOwnProperty(key3)) {
+	        			var property = object[key3];
+	        			console.log(property);
+	        			window['itemNumber' + invCounter] = game.add.text(370, 100 + invCounter3 * 30, property, { font: '16px', fill: 'black'});
+	        			window['itemNumber' + invCounter].fixedToCamera = true;
+	    			}
+
+	    			invCounter3++;
+	    			invCounter++;
+				}
+
+				object = FoodItems;
+				invCounter4 = 0; 
+				for(var key4 in object) {
+					console.log(key4);
+					var invtext = key4 + " :"
+					window['itemLabel' + invCounter] = game.add.text(560, 100 + invCounter4 * 30, invtext, { font: '16px', fill: 'black'});
+					window['itemLabel' + invCounter].fixedToCamera = true;
+
+	    			if(object.hasOwnProperty(key4)) {
+	        			var property = object[key4];
+	        			console.log(property);
+	        			window['itemNumber' + invCounter] = game.add.text(690, 100 + invCounter4 * 30, property, { font: '16px', fill: 'black'});
+	        			window['itemNumber' + invCounter].fixedToCamera = true;
+	    			}
+
+	    			invCounter4++;
 	    			invCounter++;
 				}
 
@@ -630,6 +703,7 @@ function updateCropGrowth(){
 	console.log("Crops Grew");
 }
 
+/*
 function drawItems(){
 
 	if(isRock){
@@ -704,6 +778,7 @@ function drawItems(){
 	}
 
 }
+*/
 
 function drawBuildings(){
 	if(checkOverlap(mainChar, craftingtable)){
@@ -721,6 +796,7 @@ function drawCraftingMenu(){
 
 	//Add Crafting Menu Buttons
 	craftStonePickButton = game.add.button(90, 100, 'baseButton', craftStonePick, this);
+	//craftthing = game.add.text(game, 400, 400, "craft this");
 	craftStonePickButton.onInputOver.add(over, this);
 
 	craftStoneAxeButton = game.add.button(90, 140, 'baseButton', craftStoneAxe, this);

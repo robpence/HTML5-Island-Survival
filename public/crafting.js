@@ -124,7 +124,7 @@ function craftFishingRod(){
 function craftWoodHook(){
 	if(CraftedItems.BOARDS >= 1){
 		CraftedItems.BOARDS -= 1;
-		Tools.WOODENFISHHOOK += 1;
+		Tools.WOODFISHHOOK += 1;
 	}
 }
 
