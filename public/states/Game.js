@@ -81,14 +81,31 @@ Game.prototype = {
 
 	create() {
 		//order matters, first is in back.
-		game.world.setBounds(0, 0, 1920, 1920);
+		game.world.setBounds(0, 0, 1600, 1600);
 		map = game.add.tilemap('island');
-		map.addTilesetImage('Collide', 'metaTiles');
-    	map.addTilesetImage('Desert', 'tiles');
+    	map.addTilesetImage('Roguelike', 'tiles');
 
-    	collideLayer = map.createLayer('Collisions');
+    	//collideLayer = map.createLayer('Collisions');
     	layer = map.createLayer('Ground');
+    	layer2 = map.createLayer('Ground-Overlay');
+    	layer3 = map.createLayer('Buildings');
+    	layer4 = map.createLayer('Nature');
 
+    	//layer.scale.set(2);
+    	//layer2.scale.set(2);
+    	//layer3.scale.set(2);
+    	//layer4.scale.set(2);
+
+    	//layer.resizeWorld();
+    	//layer2.resizeWorld();
+    	//layer3.resizeWorld();
+    	//layer4.resizeWorld();
+
+    	map.setCollisionBetween(527, 541, true, layer4);
+    	map.setCollisionBetween(641, 655, true, layer4);
+    	map.setCollisionBetween(1252, 1254, true, layer4); //rocks
+    	map.setCollisionBetween(1309, 1311, true, layer4);
+    	/*
     	map.setCollision(73);
     	map.setCollision(44); //rock
     	map.setCollisionBetween(54, 58); //plants and ocean
@@ -97,10 +114,15 @@ Game.prototype = {
     	map.setCollision(72); //crops
     	map.setCollision(73, true, 'Collisions');
     	layer.resizeWorld();
+    	*/
+    	layer.resizeWorld();
+    	layer2.resizeWorld();
+    	layer3.resizeWorld();
+    	layer4.resizeWorld();
 
     	marker = game.add.graphics();
     	marker.lineStyle(2, 0x000000, 1);
-    	marker.drawRect(0, 0, 32, 32);
+    	marker.drawRect(0, 0, 16, 16);
 
     	//map.setTileIndexCallback(32, hitRock, this);
     	//map.setCollisionBetween(9, 32);
@@ -161,7 +183,7 @@ Game.prototype = {
 		messageLabel.visible = false;
 		messageLabel.fixedToCamera = true;
 
-		game.physics.enable( [ mainChar, craftingtable ], Phaser.Physics.ARCADE);
+		game.physics.enable( [ mainChar, craftingtable, bed ], Phaser.Physics.ARCADE);
 
 		dialogbackground = game.add.sprite(0, 550, 'dialogbackground');
 		dialogbackground.visible = false;
@@ -187,34 +209,39 @@ Game.prototype = {
 
 	update() {
 		//game.physics.arcade.collide(mainChar, collideLayer);
-		game.physics.arcade.collide(mainChar, layer);
-		game.physics.arcade.collide(mainChar, craftingtable, collisionHandler, null, this);
+		//game.physics.arcade.collide(mainChar, layer);
+		//game.physics.arcade.collide(mainChar, layer2);
+		//game.physics.arcade.collide(mainChar, layer3);
+		game.physics.arcade.collide(mainChar, layer4);
+		game.physics.arcade.collide(mainChar, craftingtable, drawCraftingMenu, null, this);
+		game.physics.arcade.collide(mainChar, bed, goToSleep, null, this);
 
 		mainChar.body.velocity.set(0);
 		craftingtable.body.velocity.set(0);
+		bed.body.velocity.set(0);
 
     	if(displayBuilder){
-    		marker.x = layer.getTileX(mainChar.x) * 32;
-    		marker.y = layer.getTileY(mainChar.y) * 32;
+    		marker.x = layer.getTileX(mainChar.x) * 16;
+    		marker.y = layer.getTileY(mainChar.y) * 16;
     		if(facing == 'n'){
     			//console.log('facing north');
-    			marker.x = layer.getTileX(mainChar.x + 12) * 32;
-    			marker.y = layer.getTileY(mainChar.y - 16) * 32;
+    			marker.x = layer.getTileX(mainChar.x + 6) * 16;
+    			marker.y = layer.getTileY(mainChar.y - 8) * 16;
     		}
     		if(facing == 'e'){
     			//console.log('facing east');
-    			marker.x = layer.getTileX(mainChar.x + 32) * 32;
-    			marker.y = layer.getTileY(mainChar.y + 16) * 32;
+    			marker.x = layer.getTileX(mainChar.x + 36) * 16;
+    			marker.y = layer.getTileY(mainChar.y + 24) * 16;
     		}
     		if(facing == 's'){
     			//console.log('facing south');
-    			marker.x = layer.getTileX(mainChar.x + 12) * 32;
-    			marker.y = layer.getTileY(mainChar.y + 48) * 32;
+    			marker.x = layer.getTileX(mainChar.x + 6) * 16;
+    			marker.y = layer.getTileY(mainChar.y + 40) * 16;
     		}
     		if(facing == 'w'){
     			//console.log('facing west');
-    			marker.x = layer.getTileX(mainChar.x - 32) * 32;
-    			marker.y = layer.getTileY(mainChar.y + 16) * 32;
+    			marker.x = layer.getTileX(mainChar.x - 16) * 16;
+    			marker.y = layer.getTileY(mainChar.y + 24) * 16;
     		}
     		//marker.x = layer.getTileX(mainChar.x) * 32;
     		//marker.y = layer.getTileY(mainChar.y) * 32;
@@ -332,11 +359,12 @@ function listenForKeyboardInputs(){
 				//console.log(dll.getItem(dialogLineNumber));
 			}
 			if(e.keyCode == Phaser.Keyboard.Y){
+				console.log('displayBuilder');
 				displayBuilder = !displayBuilder;
 			}
 			if(e.keyCode == Phaser.Keyboard.E && displayBuilder == true){
 				//check if you can build on this tile
-				currentTile = map.getTile(layer.getTileX(marker.x), layer.getTileY(marker.y));
+				currentTile = map.getTile(layer4.getTileX(marker.x), layer4.getTileY(marker.y), layer4);
 				console.log(currentTile);
 				
 				//if the land is farmable dirt
@@ -610,6 +638,21 @@ function updateTime(){
 	}
 }
 
+function goToSleep(){
+
+	day += 1;
+	minutes = "00";
+	hours = 8;
+	timeLabel.setText('Time: ' + hours + ':' + minutes);
+	dayLabel.setText('Day: ' + day);
+	updateCropGrowth();
+	mainChar.x = 400;
+	mainChar.y = 400;
+
+	//TODO decrease thirst and hunger bars
+
+}
+
 //function to flash a message on the screen
 function flashMessage(text){
 	if(messageLabel.visible == true){
@@ -677,6 +720,7 @@ function createPickUps(){
 
 function createBuildings(){
 	craftingtable = game.add.sprite(160, 255, 'craftingtable');
+	bed = game.add.sprite(200, 200, 'craftingtable');
 }
 
 function updateCropGrowth(){
@@ -781,9 +825,12 @@ function drawItems(){
 */
 
 function drawBuildings(){
-	if(checkOverlap(mainChar, craftingtable)){
-		drawCraftingMenu();
-	}
+	//if(checkOverlap(mainChar, craftingtable)){
+	//	drawCraftingMenu();
+	//}
+	//if(checkOverlap(mainChar, bed)){
+	//	goToSleep();
+	//}
 }
 function drawCraftingMenu(){
 

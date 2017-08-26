@@ -1,5 +1,9 @@
 var Credits = function(game) {};
 
+
+//LIST OF CREDITS TO ADD/PEOPLE TO THANK
+//free game art from kenny @ www.kenney.nl
+
 Credits.prototype = {
 
   preload: function () {
