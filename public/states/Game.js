@@ -441,9 +441,11 @@ function listenForKeyboardInputs(){
 		}
 		/* -------------------- MINING SYSTEM ----------------------- */
 		if(game.input.keyboard.isDown(Phaser.Keyboard.Q) && displayBuilder == true){
-			currentTile = map.getTile(layer.getTileX(marker.x), layer.getTileY(marker.y));
+			currentTile = map.getTile(layer4.getTileX(marker.x), layer4.getTileY(marker.y), layer4);
 
-			if(currentTile.index == 44){
+			//rocks
+			if(currentTile != null && (currentTile.index == 1252 || currentTile.index == 1253 || currentTile.index == 1254 ||
+				currentTile.index == 1309 || currentTile.index == 1310 || currentTile.index == 1311)){
 				miningBar.setPosition(currentTile.worldX + 16, currentTile.worldY - 10);
 
 				if (game.input.keyboard.downDuration(Phaser.Keyboard.Q, 1800)){	//add position check
@@ -457,13 +459,14 @@ function listenForKeyboardInputs(){
 						miningBar.setPercent(miningBarPercent);
 						MiscItems.ROCK += 5;
 						flashMessage("+5 Rocks");
-						map.putTile(42, layer.getTileX(marker.x), layer.getTileY(marker.y));
+						map.removeTile(layer.getTileX(marker.x), layer.getTileY(marker.y), layer4);
 					}
 
 				}
 			}
 
-			if(currentTile.index == 54 || currentTile.index == 55 || currentTile.index == 56){
+			//plants
+			if(currentTile != null && (currentTile.index == 54 || currentTile.index == 55 || currentTile.index == 56)){
 				plantCuttingBar.setPosition(currentTile.worldX + 16, currentTile.worldY - 10);
 
 				if (game.input.keyboard.downDuration(Phaser.Keyboard.Q, 1800)){	//add position check
