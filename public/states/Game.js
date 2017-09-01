@@ -393,22 +393,27 @@ function listenForKeyboardInputs(){
 			if(e.keyCode == Phaser.Keyboard.E && displayBuilder == true){
 				//check if you can build on this tile
 				currentTile = map.getTile(layer2.getTileX(marker.x), layer2.getTileY(marker.y), layer2);
+				currentTile4 = map.getTile(layer4.getTileX(marker.x), layer4.getTileY(marker.y), layer4);
 				console.log(currentTile);
 				
 				//if the land is farmable dirt
 				if(currentTile.index == 579 || currentTile.index == 7 || currentTile.index == 64){
 					map.putTile(1087, layer2.getTileX(marker.x), layer2.getTileY(marker.y), layer2);
-				}else{
-					console.log("can't build here");
+				}				
+				//if tile is farmable then plant a crop
+				else if(currentTile.index == 1087){
+					//for now we just have 1 crop, ill have to draw more
+					if(currentTile4 == null || (currentTile4.index != 539 && currentTile4.index != 596 && currentTile4.index != 597)){
+						map.putTile(539, layer.getTileX(marker.x), layer.getTileY(marker.y), layer4);
+					}else if(currentTile4.index == 597){
+						FoodItems.GUAVA += 3;
+						flashMessage("You picked 3 Guavas");
+						map.removeTile(layer.getTileX(marker.x), layer.getTileY(marker.y), layer4);
+					}
 				}
-
-				//if tile is a crop that can be harvested
-				if(currentTile.index == 1087){
-					//reset it to dirt
-					//increase crop count by a number
-					FoodItems.GUAVA += 4;
-					flashMessage("You picked 4 guava fruits!");
-					map.putTile(71, layer.getTileX(marker.x), layer.getTileY(marker.y));
+				else{
+					flashMessage("You can't farm here");
+					console.log("can't build here");
 				}
 
 				//TODO add a system that tells the user a message based on what tile is infront of them
@@ -761,20 +766,21 @@ function createBuildings(){
 
 function updateCropGrowth(){
 	//loop through all tiles on the map
-	//if the are 59 change them to 60
-	//if the are 60 change them to 48
-	//if they are 48 change them to 72
+	//if the are 539 change them to 596
+	//if the are 596 change them to 597
 	for(var y = 0; y < map.height; ++y){
 		for(var x = 0; x < map.width; ++x){      
 			
-			var tile = map.getTile(x, y);
+			var tile = map.getTile(x, y, layer4);
 			//console.log(tile);
-			if(tile.index == 59){
-				map.putTile(60, x, y);
-			}else if(tile.index == 60){
-				map.putTile(48, x, y);
-			}else if(tile.index == 48){
-				map.putTile(72, x, y);
+			if(tile != null){
+				if(tile.index == 539){
+					map.putTile(596, x, y, layer4);
+				}else if(tile.index == 596){
+					map.putTile(597, x, y, layer4);
+				}else if(tile.index == 597){
+					map.putTile(597, x, y, layer4);
+				}
 			}
 
 		}
