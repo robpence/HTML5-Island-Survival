@@ -17,7 +17,9 @@ var game,
 	map,
 	layer,
 	marker,
+	hiddenMarker,
 	currentTile,
+	currentHiddenTile,
 	mainChar, 
 	char2, 
 	cursors,
@@ -124,6 +126,11 @@ Game.prototype = {
     	marker.lineStyle(2, 0x000000, 1);
     	marker.drawRect(0, 0, 16, 16);
 
+    	//to determine what tile the character is facing
+    	hiddenMarker = game.add.graphics();
+    	hiddenMarker.lineStyle(0, 0x000000, 1);
+    	hiddenMarker.drawRect(0, 0, 16, 16);
+
     	//map.setTileIndexCallback(32, hitRock, this);
     	//map.setCollisionBetween(9, 32);
 
@@ -220,9 +227,30 @@ Game.prototype = {
 		craftingtable.body.velocity.set(0);
 		bed.body.velocity.set(0);
 
+		//determine the tile that is infront of the character
+		if(facing == 'n'){
+    		//console.log('facing north');
+    		hiddenMarker.x = layer.getTileX(mainChar.x + 6) * 16;
+    		hiddenMarker.y = layer.getTileY(mainChar.y - 8) * 16;
+    	}
+    	if(facing == 'e'){
+    		//console.log('facing east');
+    		hiddenMarker.x = layer.getTileX(mainChar.x + 36) * 16;
+    		hiddenMarker.y = layer.getTileY(mainChar.y + 24) * 16;
+    	}
+    	if(facing == 's'){
+    		//console.log('facing south');
+    		hiddenMarker.x = layer.getTileX(mainChar.x + 6) * 16;
+    		hiddenMarker.y = layer.getTileY(mainChar.y + 40) * 16;
+    	}
+    	if(facing == 'w'){
+    		//console.log('facing west');
+    		hiddenMarker.x = layer.getTileX(mainChar.x - 16) * 16;
+    		hiddenMarker.y = layer.getTileY(mainChar.y + 24) * 16;
+    	}
+
+
     	if(displayBuilder){
-    		marker.x = layer.getTileX(mainChar.x) * 16;
-    		marker.y = layer.getTileY(mainChar.y) * 16;
     		if(facing == 'n'){
     			//console.log('facing north');
     			marker.x = layer.getTileX(mainChar.x + 6) * 16;
@@ -364,18 +392,18 @@ function listenForKeyboardInputs(){
 			}
 			if(e.keyCode == Phaser.Keyboard.E && displayBuilder == true){
 				//check if you can build on this tile
-				currentTile = map.getTile(layer4.getTileX(marker.x), layer4.getTileY(marker.y), layer4);
+				currentTile = map.getTile(layer2.getTileX(marker.x), layer2.getTileY(marker.y), layer2);
 				console.log(currentTile);
 				
 				//if the land is farmable dirt
-				if(currentTile.index == 71){
-					map.putTile(59, layer.getTileX(marker.x), layer.getTileY(marker.y));
+				if(currentTile.index == 579 || currentTile.index == 7 || currentTile.index == 64){
+					map.putTile(1087, layer2.getTileX(marker.x), layer2.getTileY(marker.y), layer2);
 				}else{
 					console.log("can't build here");
 				}
 
 				//if tile is a crop that can be harvested
-				if(currentTile.index == 72){
+				if(currentTile.index == 1087){
 					//reset it to dirt
 					//increase crop count by a number
 					FoodItems.GUAVA += 4;
@@ -386,7 +414,15 @@ function listenForKeyboardInputs(){
 				//TODO add a system that tells the user a message based on what tile is infront of them
 				// such as "This is the ocean" if they hit e while standing infront of the ocean, while not in biuld mode
 
+			}else if(e.keyCode == Phaser.Keyboard.E && displayBuilder == false){
+				currentHiddenTile = map.getTile(layer4.getTileX(hiddenMarker.x), layer4.getTileY(hiddenMarker.y), layer4);
+
+				//CHECK FOR BERRIES
+				checkForBerries();
+				//CHECK FOR MUSHROOMS
+				checkForMushrooms();
 			}
+
 			//if Q is up before mining is done then reset mining
 			if(e.keyCode == Phaser.Keyboard.Q){
 				miningBarPercent = 100;
@@ -911,5 +947,72 @@ function leaveCraftingMenu(event) {
 	mainChar.x = 175;
 	mainChar.y = 300;
 	game.paused = false;
+}
+
+function checkForBerries(){
+	if(currentHiddenTile.index == 537 || currentHiddenTile.index == 538 || currentHiddenTile.index == 652){
+		if(currentHiddenTile.index == 538 || currentHiddenTile.index == 537){
+			//increase berries
+			//Math.floor(Math.random() * (max - min + 1)) + min;
+			var numBerries = Math.floor(Math.random() * (5 - 1 + 1)) + 1;
+			numBerries += 10;
+			var numBerriesMessage = "You Picked " + numBerries + " red berries!";
+			FoodItems.REDBERRIES += numBerries;
+			flashMessage(numBerriesMessage);
+			if(currentHiddenTile.index == 538){
+				map.putTile(533, currentHiddenTile.x, currentHiddenTile.y, layer4);
+			}
+			if(currentHiddenTile.index == 537){
+				map.putTile(527, currentHiddenTile.x, currentHiddenTile.y, layer4);
+			}
+		}
+
+		if(currentHiddenTile.index == 652){
+			//increase blueberries
+			var numBerries = Math.floor(Math.random() * (5 - 1 + 1)) + 1;
+			numBerries += 10;
+			var numBerriesMessage = "You Picked " + numBerries + " red berries!";
+			FoodItems.BLUEBERRIES += numBerries;
+			flashMessage(numBerriesMessage);
+			map.putTile(533, currentHiddenTile.x, currentHiddenTile.y, layer4);
+		}
+		
+	}
+}
+
+function checkForMushrooms(){
+	if(currentHiddenTile.index == 163 || currentHiddenTile.index == 220 
+		|| currentHiddenTile.index == 277 || currentHiddenTile.index == 334 
+		|| currentHiddenTile.index == 391 || currentHiddenTile.index == 448){
+
+		if(currentHiddenTile.index == 163 || currentHiddenTile.index == 220){
+			//increase red mushrooms
+			//Math.floor(Math.random() * (max - min + 1)) + min;
+			var numMushrooms = Math.floor(Math.random() * (3 - 1 + 1)) + 1;
+			var numMushroomsMessage = "You found " + numMushrooms + " red mushrooms!";
+			FoodItems.REDMUSHROOMS += numMushrooms;
+			flashMessage(numMushroomsMessage);
+			map.putTile(550, currentHiddenTile.x, currentHiddenTile.y, layer4);
+		}
+
+		if(currentHiddenTile.index == 277 || currentHiddenTile.index == 334){
+			//increase spotted mushrooms
+			var numMushrooms = Math.floor(Math.random() * (3 - 1 + 1)) + 1;
+			var numMushroomsMessage = "You found " + numMushrooms + " spotted mushrooms!";
+			FoodItems.SPOTTEDMUSHROOMS += numMushrooms;
+			flashMessage(numMushroomsMessage);
+			map.putTile(550, currentHiddenTile.x, currentHiddenTile.y, layer4);
+		}
+
+		if(currentHiddenTile.index == 391 || currentHiddenTile.index == 448){
+			//increase brown mushrooms
+			var numMushrooms = Math.floor(Math.random() * (3 - 1 + 1)) + 1;
+			var numMushroomsMessage = "You found " + numMushrooms + " brown mushrooms!";
+			FoodItems.BROWNMUSHROOMS += numMushrooms;
+			flashMessage(numMushroomsMessage);
+			map.putTile(550, currentHiddenTile.x, currentHiddenTile.y, layer4);
+		}
+		
+	}
 }
 
