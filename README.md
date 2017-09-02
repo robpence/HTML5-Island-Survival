@@ -12,9 +12,9 @@ An HTML5 Island Survival game made with Phaser.io
 1. Better artwork for everything
 2. An intro scene to explain whats happening
 3. Crafting system and menu
-	Can build buildings
-	Can make tools
-	Can make items
+	- Can build buildings
+	- Can make tools
+	- Can make items
 4. Map generation of some kind
 5. Add in NPC
 	- Scenes with npcs
@@ -22,7 +22,7 @@ An HTML5 Island Survival game made with Phaser.io
 	- NPCs can walk around the island
 6. A Day/Time system
 	- Items generated on new days
-	~~Let player sleep to to advance day~~
+	- ~~Let player sleep to to advance day~~
 7. Health, Hunger, and Thirst System
 8. Music and Sounds
 9. Minigames for things like cooking, fishing, mining, etc
