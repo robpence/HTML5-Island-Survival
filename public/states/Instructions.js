@@ -54,6 +54,12 @@ Instructions.prototype = {
       game.state.start("GameMenu");
     });
 
+    var optionStyle = { font: '30pt', fill: 'white', align: 'left', stroke: 'black', strokeThickness: 4};
+    var txt = game.add.text(40, 150, "WASD to move", optionStyle);
+    var txt = game.add.text(40, 250, "E to Interact", optionStyle);
+    var txt = game.add.text(40, 350, "Y to activate farm mode", optionStyle);
+    var txt = game.add.text(40, 450, "Q to mine/cut", optionStyle);
+
   }
 
 };

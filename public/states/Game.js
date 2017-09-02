@@ -102,6 +102,14 @@ Game.prototype = {
     	//layer2.resizeWorld();
     	//layer3.resizeWorld();
     	//layer4.resizeWorld();
+    	map.setCollisionBetween(1, 2, true, layer);
+    	map.setCollisionBetween(58, 59, true, layer);
+    	map.setCollisionBetween(115, 116, true, layer);
+    	map.setCollisionBetween(61, 61, true, layer);
+
+    	//tent
+    	map.setCollisionBetween(674, 675, true, layer3);
+    	map.setCollisionBetween(617, 618, true, layer3);
 
     	map.setCollisionBetween(527, 541, true, layer4);
     	map.setCollisionBetween(641, 655, true, layer4);
@@ -190,7 +198,7 @@ Game.prototype = {
 		messageLabel.visible = false;
 		messageLabel.fixedToCamera = true;
 
-		game.physics.enable( [ mainChar, craftingtable, bed ], Phaser.Physics.ARCADE);
+		game.physics.enable( [ mainChar, craftingtable ], Phaser.Physics.ARCADE);
 
 		dialogbackground = game.add.sprite(0, 550, 'dialogbackground');
 		dialogbackground.visible = false;
@@ -216,16 +224,14 @@ Game.prototype = {
 
 	update() {
 		//game.physics.arcade.collide(mainChar, collideLayer);
-		//game.physics.arcade.collide(mainChar, layer);
+		game.physics.arcade.collide(mainChar, layer);
 		//game.physics.arcade.collide(mainChar, layer2);
-		//game.physics.arcade.collide(mainChar, layer3);
+		game.physics.arcade.collide(mainChar, layer3);
 		game.physics.arcade.collide(mainChar, layer4);
 		game.physics.arcade.collide(mainChar, craftingtable, drawCraftingMenu, null, this);
-		game.physics.arcade.collide(mainChar, bed, goToSleep, null, this);
 
 		mainChar.body.velocity.set(0);
 		craftingtable.body.velocity.set(0);
-		bed.body.velocity.set(0);
 
 		//determine the tile that is infront of the character
 		if(facing == 'n'){
@@ -421,11 +427,17 @@ function listenForKeyboardInputs(){
 
 			}else if(e.keyCode == Phaser.Keyboard.E && displayBuilder == false){
 				currentHiddenTile = map.getTile(layer4.getTileX(hiddenMarker.x), layer4.getTileY(hiddenMarker.y), layer4);
+				currentHiddenTile3 = map.getTile(layer3.getTileX(hiddenMarker.x), layer3.getTileY(hiddenMarker.y), layer3);
 
+				if(currentHiddenTile3 != null && (currentHiddenTile3.index == 674 || currentHiddenTile3.index == 675)){
+					flashMessage("you went to sleep");
+					goToSleep();
+				}
 				//CHECK FOR BERRIES
 				checkForBerries();
 				//CHECK FOR MUSHROOMS
 				checkForMushrooms();
+				
 			}
 
 			//if Q is up before mining is done then reset mining
@@ -768,7 +780,6 @@ function createPickUps(){
 
 function createBuildings(){
 	craftingtable = game.add.sprite(160, 255, 'craftingtable');
-	bed = game.add.sprite(200, 200, 'craftingtable');
 }
 
 function updateCropGrowth(){
@@ -877,10 +888,8 @@ function drawBuildings(){
 	//if(checkOverlap(mainChar, craftingtable)){
 	//	drawCraftingMenu();
 	//}
-	//if(checkOverlap(mainChar, bed)){
-	//	goToSleep();
-	//}
 }
+
 function drawCraftingMenu(){
 
 	game.paused = true;
@@ -963,7 +972,7 @@ function leaveCraftingMenu(event) {
 }
 
 function checkForBerries(){
-	if(currentHiddenTile.index == 537 || currentHiddenTile.index == 538 || currentHiddenTile.index == 652){
+	if(currentHiddenTile != null && (currentHiddenTile.index == 537 || currentHiddenTile.index == 538 || currentHiddenTile.index == 652)){
 		if(currentHiddenTile.index == 538 || currentHiddenTile.index == 537){
 			//increase berries
 			//Math.floor(Math.random() * (max - min + 1)) + min;
@@ -994,9 +1003,9 @@ function checkForBerries(){
 }
 
 function checkForMushrooms(){
-	if(currentHiddenTile.index == 163 || currentHiddenTile.index == 220 
+	if(currentHiddenTile != null && (currentHiddenTile.index == 163 || currentHiddenTile.index == 220 
 		|| currentHiddenTile.index == 277 || currentHiddenTile.index == 334 
-		|| currentHiddenTile.index == 391 || currentHiddenTile.index == 448){
+		|| currentHiddenTile.index == 391 || currentHiddenTile.index == 448)){
 
 		if(currentHiddenTile.index == 163 || currentHiddenTile.index == 220){
 			//increase red mushrooms
