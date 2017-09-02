@@ -22,8 +22,14 @@ An HTML5 Island Survival game made with Phaser.io
 	- NPCs can walk around the island
 6. A Day/Time system
 	- Items generated on new days
-	- Let player sleep to to advance day
+	~~Let player sleep to to advance day~~
 7. Health, Hunger, and Thirst System
 8. Music and Sounds
 9. Minigames for things like cooking, fishing, mining, etc
 10. Solve Puzzles or Mini Challenges to unlock special items
+11. Simple farming system
+	- add more crops
+	- ~~advancing the day lets the crops grow~~
+	- ~~can only farm on tillable/fertile dirt~~
+	- ~~can harvest crops~~
+	
