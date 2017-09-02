@@ -442,6 +442,7 @@ function listenForKeyboardInputs(){
 		/* -------------------- MINING SYSTEM ----------------------- */
 		if(game.input.keyboard.isDown(Phaser.Keyboard.Q) && displayBuilder == true){
 			currentTile = map.getTile(layer4.getTileX(marker.x), layer4.getTileY(marker.y), layer4);
+			//console.log(currentTile);
 
 			//rocks
 			if(currentTile != null && (currentTile.index == 1252 || currentTile.index == 1253 || currentTile.index == 1254 ||
@@ -466,7 +467,9 @@ function listenForKeyboardInputs(){
 			}
 
 			//plants
-			if(currentTile != null && (currentTile.index == 54 || currentTile.index == 55 || currentTile.index == 56)){
+			if(currentTile != null && (currentTile.index == 530 || currentTile.index == 531 || currentTile.index == 532 || currentTile.index == 655
+				|| currentTile.index == 641 || currentTile.index == 642 ||  currentTile.index == 643 || currentTile.index == 644 || 
+				currentTile.index == 645 || currentTile.index == 646 || currentTile.index == 598)){
 				plantCuttingBar.setPosition(currentTile.worldX + 16, currentTile.worldY - 10);
 
 				if (game.input.keyboard.downDuration(Phaser.Keyboard.Q, 1800)){	//add position check
@@ -478,21 +481,22 @@ function listenForKeyboardInputs(){
 						plantCuttingBar.setPosition(-100, -100);
 						plantCuttingBarPercent = 100;
 						plantCuttingBar.setPercent(plantCuttingBarPercent);
-						if(currentTile.index == 54){
-							MiscItems.STICK += 2;
-							MiscItems.VINE += 1;
-							flashMessage("+2 Sticks, +1 Vine");
-						}
-						if(currentTile.index == 55){
+						if(currentTile.index == 530 || currentTile.index == 531 || currentTile.index == 532 || currentTile.index == 655){
 							MiscItems.STICK += 3;
-							MiscItems.VINE += 2;
-							flashMessage("+3 Sticks, +2 Vine");
+							MiscItems.VINE += 1;
+							flashMessage("+3 Sticks, +1 Vine");
+							map.removeTile(layer4.getTileX(marker.x), layer4.getTileY(marker.y), layer4);
 						}
-						if(currentTile.index == 56){
+
+						if(currentTile.index == 641 || currentTile.index == 642 ||  currentTile.index == 643 || currentTile.index == 644 || 
+							currentTile.index == 645 || currentTile.index == 646 || currentTile.index == 598){
+							MiscItems.LOG += 1;
 							MiscItems.STICK += 4;
-							flashMessage("+4 Sticks");
+							flashMessage("+4 Sticks, +1 Log");
+							map.removeTile(layer4.getTileX(marker.x), layer4.getTileY(marker.y), layer4);
+							map.removeTile(layer4.getTileX(marker.x), layer4.getTileY(marker.y) - 1, layer4);
 						}
-						map.putTile(42, layer.getTileX(marker.x), layer.getTileY(marker.y));
+						//map.putTile(42, layer.getTileX(marker.x), layer.getTileY(marker.y));
 					}
 
 				}
