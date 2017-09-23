@@ -6,6 +6,7 @@ var STAGE_WIDTH = 800,
 	TIME_PER_FRAME = 33, //this equates to 30 fps
 	GAME_FONTS = "bold 20px sans-serif";
 	FLASH_MESSAGE_TIMER = 100;
+	CAMERA_MOVE_SPEED = 6;
 
 //Images
 var PATH_CHAR = "img/mainCharacterSpriteSheet.png";

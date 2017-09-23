@@ -148,17 +148,21 @@ Game.prototype = {
 		introText = game.cache.getText('introText');
 		
 		//init main char sprite + animations
+		/*
 		mainChar = game.add.sprite(400, 400, 'mainCharacter', 7);
 		mainChar.animations.add('walkNorth', [0, 1, 2], 15);
 		mainChar.animations.add('walkEast', [3, 4, 5], 15);
 		mainChar.animations.add('walkSouth', [6, 7, 8], 15);
 		mainChar.animations.add('walkWest', [9, 10, 11], 15);
+		*/
 
 		//init char2 sprite + animations
 		char2 = game.add.sprite(300, 300, 'char2', 7);
 
+		/*
 		game.physics.enable(mainChar);
 		game.camera.follow(mainChar);
+		*/
 
 		/********** TOP HUD ***********************/
 		healthbackground = game.add.sprite(0, 0, 'healthbackground');
@@ -198,7 +202,7 @@ Game.prototype = {
 		messageLabel.visible = false;
 		messageLabel.fixedToCamera = true;
 
-		game.physics.enable( [ mainChar, craftingtable ], Phaser.Physics.ARCADE);
+		//game.physics.enable( [ mainChar, craftingtable ], Phaser.Physics.ARCADE);
 
 		dialogbackground = game.add.sprite(0, 550, 'dialogbackground');
 		dialogbackground.visible = false;
@@ -224,16 +228,17 @@ Game.prototype = {
 
 	update() {
 		//game.physics.arcade.collide(mainChar, collideLayer);
-		game.physics.arcade.collide(mainChar, layer);
+		//game.physics.arcade.collide(mainChar, layer);
 		//game.physics.arcade.collide(mainChar, layer2);
-		game.physics.arcade.collide(mainChar, layer3);
-		game.physics.arcade.collide(mainChar, layer4);
-		game.physics.arcade.collide(mainChar, craftingtable, drawCraftingMenu, null, this);
+		//game.physics.arcade.collide(mainChar, layer3);
+		//game.physics.arcade.collide(mainChar, layer4);
+		//game.physics.arcade.collide(mainChar, craftingtable, drawCraftingMenu, null, this);
 
-		mainChar.body.velocity.set(0);
-		craftingtable.body.velocity.set(0);
+		//mainChar.body.velocity.set(0);
+		//craftingtable.body.velocity.set(0);
 
 		//determine the tile that is infront of the character
+		/*
 		if(facing == 'n'){
     		//console.log('facing north');
     		hiddenMarker.x = layer.getTileX(mainChar.x + 6) * 16;
@@ -253,9 +258,9 @@ Game.prototype = {
     		//console.log('facing west');
     		hiddenMarker.x = layer.getTileX(mainChar.x - 16) * 16;
     		hiddenMarker.y = layer.getTileY(mainChar.y + 24) * 16;
-    	}
+    	}*/
 
-
+    	/*
     	if(displayBuilder){
     		if(facing == 'n'){
     			//console.log('facing north');
@@ -283,6 +288,7 @@ Game.prototype = {
     		marker.x = -32;
     		marker.y = -32;
     	}
+    	*/
 
 		//----------------------------------------
 		//---------- KEYBOARD INPUTS -------------
@@ -342,27 +348,32 @@ function hitRock(sprite, tile){
 function listenForKeyboardInputs(){
 
 		if(game.input.keyboard.isDown(Phaser.Keyboard.LEFT) || game.input.keyboard.isDown(Phaser.Keyboard.A)){
-			facing = 'w';
-			mainChar.animations.play('walkWest', 15, true);
-			mainChar.body.velocity.x = -150;
+			//facing = 'w';
+			//mainChar.animations.play('walkWest', 15, true);
+			//mainChar.body.velocity.x = -150;
+			game.camera.x -= CAMERA_MOVE_SPEED;
 		}
 		else if(game.input.keyboard.isDown(Phaser.Keyboard.RIGHT) || game.input.keyboard.isDown(Phaser.Keyboard.D)){
-			facing = 'e';
-			mainChar.animations.play('walkEast', 15, true);
-			mainChar.body.velocity.x = 150;
+			//facing = 'e';
+			//mainChar.animations.play('walkEast', 15, true);
+			//mainChar.body.velocity.x = 150;
+			game.camera.x += CAMERA_MOVE_SPEED;
 		}
 
 		if(game.input.keyboard.isDown(Phaser.Keyboard.UP) || game.input.keyboard.isDown(Phaser.Keyboard.W)){
-			facing = 'n';
-			mainChar.animations.play('walkNorth', 15, true);
-			mainChar.body.velocity.y = -150;
+			//facing = 'n';
+			//mainChar.animations.play('walkNorth', 15, true);
+			//mainChar.body.velocity.y = -150;
+			game.camera.y -= CAMERA_MOVE_SPEED;
 		}
 		else if(game.input.keyboard.isDown(Phaser.Keyboard.DOWN) || game.input.keyboard.isDown(Phaser.Keyboard.S)){
-			facing = 's';
-			mainChar.animations.play('walkSouth', 15, true);
-			mainChar.body.velocity.y = 150;
+			//facing = 's';
+			//mainChar.animations.play('walkSouth', 15, true);
+			//mainChar.body.velocity.y = 150;
+			game.camera.y += CAMERA_MOVE_SPEED;
 		}
-		game.input.keyboard.onUpCallback = function( e ){ 
+		game.input.keyboard.onUpCallback = function( e ){
+			/*
 			if(e.keyCode == Phaser.Keyboard.LEFT || e.keyCode == Phaser.Keyboard.A){ 
 				//stop left animation
 				//console.log("stop animation called");
@@ -396,6 +407,8 @@ function listenForKeyboardInputs(){
 				console.log('displayBuilder');
 				displayBuilder = !displayBuilder;
 			}
+			*/
+			/*
 			if(e.keyCode == Phaser.Keyboard.E && displayBuilder == true){
 				//check if you can build on this tile
 				currentTile = map.getTile(layer2.getTileX(marker.x), layer2.getTileY(marker.y), layer2);
@@ -439,6 +452,7 @@ function listenForKeyboardInputs(){
 				checkForMushrooms();
 				
 			}
+			*/
 
 			//if Q is up before mining is done then reset mining
 			if(e.keyCode == Phaser.Keyboard.Q){
@@ -452,6 +466,7 @@ function listenForKeyboardInputs(){
 			}
 		}
 		/* -------------------- MINING SYSTEM ----------------------- */
+		/*
 		if(game.input.keyboard.isDown(Phaser.Keyboard.Q) && displayBuilder == true){
 			currentTile = map.getTile(layer4.getTileX(marker.x), layer4.getTileY(marker.y), layer4);
 			//console.log(currentTile);
@@ -477,7 +492,7 @@ function listenForKeyboardInputs(){
 
 				}
 			}
-
+			
 			//plants
 			if(currentTile != null && (currentTile.index == 530 || currentTile.index == 531 || currentTile.index == 532 || currentTile.index == 655
 				|| currentTile.index == 641 || currentTile.index == 642 ||  currentTile.index == 643 || currentTile.index == 644 || 
@@ -514,7 +529,7 @@ function listenForKeyboardInputs(){
 				}
 			}
 
-		}
+		} */
 
 		if(game.input.keyboard.isDown(Phaser.Keyboard.P) || game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
 			if(game.paused == false){
@@ -706,8 +721,8 @@ function goToSleep(){
 	timeLabel.setText('Time: ' + hours + ':' + minutes);
 	dayLabel.setText('Day: ' + day);
 	updateCropGrowth();
-	mainChar.x = 400;
-	mainChar.y = 400;
+	//mainChar.x = 400;
+	//mainChar.y = 400;
 
 	//TODO decrease thirst and hunger bars
 
@@ -779,7 +794,7 @@ function createPickUps(){
 }
 
 function createBuildings(){
-	craftingtable = game.add.sprite(160, 255, 'craftingtable');
+	//craftingtable = game.add.sprite(160, 255, 'craftingtable');
 }
 
 function updateCropGrowth(){
@@ -966,8 +981,8 @@ function leaveCraftingMenu(event) {
 	//}
 
 	//unpause the game
-	mainChar.x = 175;
-	mainChar.y = 300;
+	//mainChar.x = 175;
+	//mainChar.y = 300;
 	game.paused = false;
 }
 
