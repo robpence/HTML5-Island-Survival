@@ -75,6 +75,11 @@ thirstBarPercent = 100;
 miningBarPercent = 100;
 plantCuttingBarPercent = 100;
 
+var worldScale = 1;
+var bgGroup;
+var boundsPoint;
+var viewRect;
+
 Game.prototype = {
 	
 	preload() {
@@ -83,9 +88,17 @@ Game.prototype = {
 
 	create() {
 		//order matters, first is in back.
+
+		// create a group for the clippable world objects
+    	bgGroup = game.add.group();
+
 		game.world.setBounds(0, 0, 1600, 1600);
 		map = game.add.tilemap('island');
     	map.addTilesetImage('Roguelike', 'tiles');
+    
+    	// move our camera half the size of the viewport back so the pivot point is in the center of our view
+    	game.camera.x = (game.width * -0.5);
+    	game.camera.y = (game.height * -0.5);
 
     	//collideLayer = map.createLayer('Collisions');
     	layer = map.createLayer('Ground');
@@ -93,15 +106,12 @@ Game.prototype = {
     	layer3 = map.createLayer('Buildings');
     	layer4 = map.createLayer('Nature');
 
-    	//layer.scale.set(2);
-    	//layer2.scale.set(2);
-    	//layer3.scale.set(2);
-    	//layer4.scale.set(2);
+    	bgGroup.add(layer);
+    	bgGroup.add(layer2);
+    	bgGroup.add(layer3);
+    	bgGroup.add(layer4);
 
-    	//layer.resizeWorld();
-    	//layer2.resizeWorld();
-    	//layer3.resizeWorld();
-    	//layer4.resizeWorld();
+   
     	map.setCollisionBetween(1, 2, true, layer);
     	map.setCollisionBetween(58, 59, true, layer);
     	map.setCollisionBetween(115, 116, true, layer);
@@ -372,6 +382,39 @@ function listenForKeyboardInputs(){
 			//mainChar.body.velocity.y = 150;
 			game.camera.y += CAMERA_MOVE_SPEED;
 		}
+		
+		//TODO MAKE THIS BETTER, AND MAKE IT USE THE MOUSE SCROLLWHEEL ALSO
+		if (game.input.keyboard.isDown(Phaser.Keyboard.Q)) {
+        	worldScale += 0.02;
+        	//layer.scale.set(2);
+        	layer.scale.set(worldScale);
+        	layer2.scale.set(worldScale);
+        	layer3.scale.set(worldScale);
+        	layer4.scale.set(worldScale);
+        	layer.resizeWorld();
+        	layer2.resizeWorld();
+        	layer3.resizeWorld();
+        	layer4.resizeWorld();
+    		//layer2.scale.set(2);
+    		//layer3.scale.set(2);
+    		//layer4.scale.set(2);
+    	}
+    	else if (game.input.keyboard.isDown(Phaser.Keyboard.E)) {
+        	worldScale -= 0.02;
+        	layer.scale.set(worldScale);
+        	layer2.scale.set(worldScale);
+        	layer3.scale.set(worldScale);
+        	layer4.scale.set(worldScale);
+        	layer.resizeWorld();
+        	layer2.resizeWorld();
+        	layer3.resizeWorld();
+        	layer4.resizeWorld();
+    	}
+
+    	// set a minimum and maximum scale value
+    	worldScale = Phaser.Math.clamp(worldScale, 1.02, 2.5);
+    
+
 		game.input.keyboard.onUpCallback = function( e ){
 			/*
 			if(e.keyCode == Phaser.Keyboard.LEFT || e.keyCode == Phaser.Keyboard.A){ 
