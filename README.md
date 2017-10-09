@@ -1,5 +1,7 @@
 # HTML5-Island-Survival
-An HTML5 Island Survival game made with Phaser.io
+An HTML5 Island Survival game made with Phaser.io...
+I have currently stopped development on this and am now working 
+on something similar but in unity as the phaser.io engine was to limiting.
 
 # To run: 
 1. Clone or download the github repo.
